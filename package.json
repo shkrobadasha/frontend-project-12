@@ -4,16 +4,17 @@
   "description": "[![Actions Status](https://github.com/shkrobadasha/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/shkrobadasha/frontend-project-12/actions)",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "cd frontend && npm install",
-    "build": "cd frontend && npm run build",
-    "start": "serve -s frontend/dist"
+    "build": "npm run build --prefix frontend",
+    "start": "start-server -s ./frontend/dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@hexlet/chat-server": "^2.0.4",
+    "bootstrap": "^5.3.6",
     "formik": "^2.4.6",
+    "react-bootstrap": "^2.10.10",
     "yup": "^1.6.1"
   }
 }

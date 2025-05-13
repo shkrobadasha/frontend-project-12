@@ -12,7 +12,3 @@ const MainPage  = () => {
 };
 
 export default MainPage;
-
-<li>
-        <Link to="/one">Page One</Link>
-      </li>

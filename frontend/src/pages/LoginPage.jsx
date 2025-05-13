@@ -1,6 +1,14 @@
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 
+
+import axios from 'axios';
+import React, { useEffect, useRef, useState } from 'react';
+import { Button } from 'react-bootstrap';
+import { useLocation, useNavigate } from 'react-router-dom';
+import useAuth from '../hooks/index.jsx';
+import routes from '../routes.js';
+
 const SignupSchema = Yup.object().shape({
     firstName: Yup.string()
     .required('Обязательное поле'),
@@ -10,6 +18,15 @@ const SignupSchema = Yup.object().shape({
 });
 
 const LoginPage = () => {
+    const auth = useAuth();
+    const [authFailed, setAuthFailed] = useState(false);
+    const inputRef = useRef();
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        inputRef.current.focus()
+    }, [])
 
     return (
         <div>
@@ -20,7 +37,11 @@ const LoginPage = () => {
                     password: '',
                 }}
                 validationSchema = {SignupSchema}
-                onSubmit ={ (values) => { console.log(values)}}
+                onSubmit ={ 
+
+                    //здесь будет происходить обработка запроса
+                    (values) => { console.log(values)}
+                }
             >
                 {({errors, touched}) => (
                     <Form>
