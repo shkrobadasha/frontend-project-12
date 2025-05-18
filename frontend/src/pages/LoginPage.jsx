@@ -1,82 +1,87 @@
-import { Formik, Form, Field} from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-
 import axios from 'axios';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Form as BootstrapForm } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/index.jsx';
 import routes from '../routes.js';
 
 const SignupSchema = Yup.object().shape({
-    username: Yup.string()
-    .required('Обязательное поле'),
-    password: Yup.string()
-    .required('Обязательное поле'),
+    username: Yup.string().required('Обязательное поле'),
+    password: Yup.string().required('Обязательное поле'),
 });
 
 const LoginPage = () => {
     const auth = useAuth();
-    const [authFailed, setAuthFailed] = useState(false);
-    const inputRef = useRef();
     const location = useLocation();
     const navigate = useNavigate();
-
-    /*useEffect(() => {
-        inputRef.current.focus()
-    }, [])*/
+    const [authFailed, setAuthFailed] = useState(false);
 
     return (
         <div>
-            <h1>Registration</h1>
+            <h1>Login</h1>
             <Formik
-                initialValues = {{
+                initialValues={{
                     username: '',
                     password: '',
                 }}
-                validationSchema = {SignupSchema}
-                onSubmit = { async (values, { setSubmitting }) => { 
-                    setAuthFailed(false);
-                        try {
-                            const res = await axios.post(routes.loginPath(), values);
-                            localStorage.setItem('userId', JSON.stringify(res.data));
-                            auth.logIn();
-                            const {from} = location.state || { from: { pathname: '/' } };
-                            navigate(from);
-                        }catch (err){
-                            setSubmitting(false);
-                            if (err.isAxiosError && err.response.status === 401) {
-                                setAuthFailed(true);
-                                return;
-                            }
-                            throw err
+                validationSchema={SignupSchema}
+                onSubmit={async (values, { setSubmitting, setErrors }) => {
+                    setAuthFailed(false)
+                    try {
+                        const res = await axios.post(routes.loginPath(), values);
+                        localStorage.setItem('userId', JSON.stringify(res.data));
+                        auth.logIn();
+                        const { from } = location.state || { from: { pathname: '/' } };
+                        navigate(from);
+                    } catch (err) {
+                        setSubmitting(false);
+                        if (err.isAxiosError && err.response?.status === 401) {
+                            setAuthFailed(true);
+                            setErrors({
+                                password: 'Неверный логин или пароль',
+                            });
+                            return;
                         }
+                        throw err;
                     }
-                }
+                }}
             >
-                {({errors, touched }) => (
+                {({ errors, touched }) => (
                     <Form>
-
-                                <BootstrapForm.Label>Имя пользователя</BootstrapForm.Label>  
-                                <Field name = 'username' />
-                                {errors.username && touched.username ? (
+                        <BootstrapForm.Group className="mb-3" controlId="username">
+                            <BootstrapForm.Label>Имя пользователя</BootstrapForm.Label>
+                            <Field
+                                as={BootstrapForm.Control}
+                                type="text"
+                                name="username"
+                                isInvalid={authFailed}
+                            />
+                            {errors.username && touched.username ? (
                                     <div>{errors.username}</div>
                                 ): null}
+                        </BootstrapForm.Group>
 
-
-                                <BootstrapForm.Label>Пароль</BootstrapForm.Label>
-                                 <Field name = 'password' />
-                                {errors.password && touched.password ? (
+                        <BootstrapForm.Group className="mb-3" controlId="password">
+                            <BootstrapForm.Label>Пароль</BootstrapForm.Label>
+                            <Field
+                                as={BootstrapForm.Control}
+                                type="password"
+                                name="password"
+                                isInvalid={authFailed}
+                            />
+                            {errors.password && touched.password ? (
                                     <div>{errors.password}</div>
                                 ): null}
-        
-                            <Button type='submit' variant="outline-primary">Submit</Button>
+                        </BootstrapForm.Group>
+
+                        <Button type='submit' variant="outline-primary">Submit</Button>
                     </Form>
-                )
-                }
+                )}
             </Formik>
         </div>
-    )
+    );
 };
 
-export default LoginPage; 
+export default LoginPage;
