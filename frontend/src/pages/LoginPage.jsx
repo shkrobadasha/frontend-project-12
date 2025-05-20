@@ -1,10 +1,11 @@
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import React, { useState } from 'react';
 import { Button, Form as BootstrapForm } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
-import useAuth from '../hooks/index.jsx';
+import { useDispatch } from 'react-redux';
+import { logIn, logOut } from '../slices/authSlice.js';
 import routes from '../routes.js';
 
 const SignupSchema = Yup.object().shape({
@@ -13,8 +14,8 @@ const SignupSchema = Yup.object().shape({
 });
 
 const LoginPage = () => {
-    const auth = useAuth();
     const location = useLocation();
+    const dispatch = useDispatch()
     const navigate = useNavigate();
     const [authFailed, setAuthFailed] = useState(false);
 
@@ -32,7 +33,8 @@ const LoginPage = () => {
                     try {
                         const res = await axios.post(routes.loginPath(), values);
                         localStorage.setItem('userId', JSON.stringify(res.data));
-                        auth.logIn();
+                        dispatch(logIn())
+
                         const { from } = location.state || { from: { pathname: '/' } };
                         navigate(from);
                     } catch (err) {

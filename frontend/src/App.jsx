@@ -10,37 +10,19 @@ import {
 import LoginPage from './pages/LoginPage.jsx';
 import MainPage from './pages/MainPage.jsx' ;
 import NotFoundPage from './pages/NotFoundPage.jsx';
-import AuthContext from './contexts/index.jsx';
-import useAuth from './hooks/index.jsx';
+import { useSelector } from 'react-redux';
 
-
-const AuthProvider = ({ children }) => {
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  const logIn = () => setLoggedIn(true);
-  const logOut = () => {
-    localStorage.removeItem('userId');
-    setLoggedIn(false);
-  };
-
-  return (
-    <AuthContext.Provider value={{ loggedIn, logIn, logOut }}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
 
 const PrivateRoute = ({ children }) => {
-  const auth = useAuth();
+  const isAuth = useSelector(state => state.auth.loggedIn)
   const location = useLocation();
   return (
-    auth.loggedIn ? children : <Navigate to="/login" state={{ from: location }} />
+    isAuth ? children : <Navigate to="/login" state={{ from: location }} />
   );
 };
 
 const App = () => {
      return (
-      <AuthProvider>
         <BrowserRouter>
           <Routes>
             <Route path="*" element = {<NotFoundPage/>}/>
@@ -51,7 +33,6 @@ const App = () => {
               </PrivateRoute>)}/>
           </Routes>
         </BrowserRouter>
-      </AuthProvider>
      )
 }
 

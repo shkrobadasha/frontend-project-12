@@ -12,10 +12,12 @@
   "license": "ISC",
   "dependencies": {
     "@hexlet/chat-server": "^2.0.4",
+    "@reduxjs/toolkit": "^2.8.2",
     "axios": "^1.9.0",
     "bootstrap": "^5.3.6",
     "formik": "^2.4.6",
     "react-bootstrap": "^2.10.10",
+    "react-redux": "^9.2.0",
     "yup": "^1.6.1"
   }
 }
