@@ -4,7 +4,7 @@ import routes from '../routes.js';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { setChannels } from '../slices/channelsSlice.js';
-import { getSocket, disconnectSocket } from '../socket.js';
+//import { getSocket, disconnectSocket } from '../socket.js';
 import { setMessages, setMessage } from '../slices/messagesSlice.js';
 
 
@@ -25,20 +25,17 @@ const getAuthHeader = () => {
 
 
 //нам сейчас нужно реализовать отправку сообщений, и их получение по дефолту
-const MainPage  = () => {
+const MainPage  = ({socket}) => {
 
   const [currentText, setCurrentText] = useState('')
   const dispatch = useDispatch();
-  const socket = getSocket();
 
-  useEffect(() => {
+  /*useEffect(() => {
     socket.on('newMessage', (newMessage) => {
-      dispatch(setMessage(newMessage))
       console.log('just get new message!')
+      dispatch(setMessage(newMessage))
     })
-  }, [socket])
-
-
+  }, [socket])*/
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -51,9 +48,6 @@ const MainPage  = () => {
         fetchContent();
   }, []);
 
-  //тут будет useEffect c aetchem
-
-  
 
     const channelContent = useSelector(state => state.channels.channels);
     //это будет перерендериваться, когда стейт поменяется
@@ -66,12 +60,20 @@ const MainPage  = () => {
     };
 
 
-    const handleClick = (e) => {
+    const handleSubmit = (e) => {
       e.preventDefault();
-      if (currentText.trim !== '') {
+
+      if (currentText.trim() !== '') {
         const newMessage = { body: `${currentText}`, channelId: `${currentUser.id}`, username: `${currentUser.name}`}
         try { 
-          axios.post(routes.messagesPath, newMessage, {headers: getAuthHeader()})
+          //оно постится нормально, нужно смотреть что с сокетом
+          axios.post(routes.messagesPath, newMessage, {headers: getAuthHeader()});
+          
+          socket.on('newMessage', (newMessage) => {
+            console.log(`${newMessage}`)
+            //dispatch(setMessage(newMessage))
+          })
+          
         } catch (err) {
           console.log(err)
         }
@@ -101,9 +103,9 @@ const MainPage  = () => {
 
     const renderMessages = () => {
       if (currentMessages.length === 0) {
-        return null
+        return (<div id="messages-box" className="chat-messages overflow-auto px-5 "></div>)
       } else {
-        <div id="messages-box" className="chat-messages overflow-auto px-5 ">
+        return (<div id="messages-box" className="chat-messages overflow-auto px-5 ">
           {currentMessages.map((message) => (
             <div class="text-break mb-2" key = {message.id}>
               <b>{message.username}</b>
@@ -111,9 +113,10 @@ const MainPage  = () => {
             </div>
           ))}
 
-        </div>
+        </div>)
       }
     }
+
     
     return(
       <div className="h-100">
@@ -140,11 +143,11 @@ const MainPage  = () => {
                     </div>
                     {renderMessages()}
                     <div className="mt-auto px-5 pу-3">
-                      <form novalidate className="py-1 border rounded-2" onClick={handleClick}>
+                      <form novalidate className="py-1 border rounded-2" onSubmit={handleSubmit}>
                         <div className="input-group has-validation"> 
                           <input name="body" ania-label="Новое сообщение" placeholder="Введите сообщение..." className="border-0 p-0 ps-2 form-control"
                            value = {currentText} onChange={handleInputChange}/>
-                          <button type="submit" disabled className="btn btn-group-vertical" > 
+                          <button type="submit" className="btn btn-group-vertical" > 
                             <span className="visually-hidden">Отправить</ span>
                           </button>
                         </div>
