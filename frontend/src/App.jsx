@@ -11,9 +11,6 @@ import LoginPage from './pages/LoginPage.jsx';
 import MainPage from './pages/MainPage.jsx' ;
 import NotFoundPage from './pages/NotFoundPage.jsx';
 import { useSelector } from 'react-redux';
-import socketIO from 'socket.io-client';
-
-const socket = socketIO.connect('http://localhost:5001');
 
 
 const PrivateRoute = ({ children }) => {
@@ -24,7 +21,7 @@ const PrivateRoute = ({ children }) => {
   );
 };
 
-const App = () => {
+const App = ({socket}) => {
      return (
         <BrowserRouter>
           <Routes>
