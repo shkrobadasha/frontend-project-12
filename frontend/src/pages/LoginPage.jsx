@@ -1,7 +1,7 @@
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef} from 'react';
 import { Button, Form as BootstrapForm } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -18,11 +18,21 @@ const LoginPage = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate();
     const [authFailed, setAuthFailed] = useState(false);
+    const inputRef = useRef();
+
+    useEffect(() => {
+        inputRef.current.focus();
+    }, []);
 
     return (
         <div className="h-100">
             <div className="h-100" id="chat"> 
                 <div className="d-flex flex-column h-100" >
+                    <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
+                        <div className="container">
+                            <a class="navbar-brand" href="/">My Chat</a>
+                        </div>
+                    </nav>
                     <div className="container-fluid h-100">
                         <div className="row justify-content-center align-content-center h-100">
                             <div className="col-12 col-md-8 col-xxl-6">
@@ -40,6 +50,7 @@ const LoginPage = () => {
                                                 try {
                                                     const res = await axios.post(routes.loginPath(), values);
                                                     localStorage.setItem('userId', JSON.stringify(res.data));
+                                                    localStorage.setItem('user', values.username);
                                                     dispatch(logIn())
                                                     const { from } = location.state || { from: { pathname: '/' } };
                                                     navigate(from);
@@ -47,6 +58,7 @@ const LoginPage = () => {
                                                     setSubmitting(false);
                                                     if (err.isAxiosError && err.response?.status === 401) {
                                                         setAuthFailed(true);
+                                                        inputRef.current.select();
                                                         setErrors({
                                                             password: 'Неверный логин или пароль',
                                                         });
@@ -65,6 +77,7 @@ const LoginPage = () => {
                                                             type="text"
                                                             name="username"
                                                             isInvalid={authFailed}
+                                                            ref={inputRef}
                                                         />
                                                         {errors.username && touched.username ? (
                                                                 <div>{errors.username}</div>
@@ -82,7 +95,7 @@ const LoginPage = () => {
                                                                 <div>{errors.password}</div>
                                                             ): null}
                                                     </BootstrapForm.Group>
-                                                    <Button type='submit' variant="outline-primary" className="w-100 mb-3 btn btn-outline-primary">Submit</Button>
+                                                    <Button type='submit' variant="outline-primary" className="w-100 mb-3 btn btn-outline-primary">Войти</Button>
                                                 </Form>
                                             )}
                                         </Formik>

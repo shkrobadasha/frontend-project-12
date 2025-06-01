@@ -39,6 +39,7 @@
 
 .Toastify__toast-container {
     z-index: var(--toastify-z-index);
+    -webkit-transform: translate3d(0,0,var(--toastify-z-index));
     position: fixed;
     padding: 4px;
     width: var(--toastify-toast-width);
@@ -1180,6 +1181,9 @@ select:disabled {
     display: none!important
 }
 
+button,[type=button],[type=reset],[type=submit] {
+    -webkit-appearance: button
+}
 
 button:not(:disabled),[type=button]:not(:disabled),[type=reset]:not(:disabled),[type=submit]:not(:disabled) {
     cursor: pointer
@@ -1229,6 +1233,7 @@ legend+* {
 }
 
 [type=search] {
+    -webkit-appearance: textfield;
     outline-offset: -2px
 }
 
@@ -1242,6 +1247,7 @@ legend+* {
 
 ::file-selector-button {
     font: inherit;
+    -webkit-appearance: button
 }
 
 output {
@@ -9090,7 +9096,7 @@ textarea.form-control-lg {
 
 .my-4 {
     margin-top: 1.5rem!important;
-    margin-bottom: 1.5rem!important;
+    margin-bottom: 1.5rem!important
 }
 
 .my-5 {
