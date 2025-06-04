@@ -5,12 +5,12 @@ import axios from "axios";
 import _ from 'lodash';
 import { Button, Form as BootstrapForm } from 'react-bootstrap';
 import { useSelector } from "react-redux";
-import { getAuthHeader } from "../pages/MainPage.jsx";
-import routes from "../routes.js";
+import { getAuthHeader } from "../../pages/MainPage.jsx";
+import routes from "../../routes.js";
 
-//добавить фиксирование на элементах чтобы заработала отправка формы
+//нужно переиспользовать наше окно
 
-const Modal = ({ active, setActive }) => {
+const EditModalWindow = ({ active, setActive, channelForEd }) => {
     const [authFailed, setAuthFailed] = useState(false);
     const currentChannels = useSelector(state => state.channels.channels);
     const channelNames = currentChannels.map(channel => channel.name);
@@ -41,7 +41,7 @@ const Modal = ({ active, setActive }) => {
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <div className="modal-title h4">Добавить канал</div>
+                            <div className="modal-title h4">Переименовать канал</div>
                             <button 
                                 type="button" 
                                 className="btn btn-close" 
@@ -50,17 +50,15 @@ const Modal = ({ active, setActive }) => {
                         </div>
                         <div className="modal-body">
                             <Formik
-                                initialValues={{ channelName: '' }}
+                                initialValues={{ channelName: channelForEd.name }}
                                 validationSchema={channelScheme}
                                 onSubmit={async (values, { setSubmitting }) => {
                                     setAuthFailed(false);
                                     try {
-                                        const newChannel = {
+                                        const newChannelName = {
                                             name: values.channelName,
-                                            removable: true,
-                                            id: _.uniqueId()
                                         };
-                                        await axios.post(routes.channelsPath(), newChannel, { 
+                                        await axios.patch(routes.channelPath(channelForEd.id), newChannelName, { 
                                             headers: getAuthHeader() 
                                         });
                                         setSubmitting(false);
@@ -117,4 +115,4 @@ const Modal = ({ active, setActive }) => {
     
 };
 
-export default Modal;
+export default EditModalWindow;

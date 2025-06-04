@@ -2,12 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import _ from 'lodash';
+import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Dropdown from 'react-bootstrap/Dropdown';
 import routes from '../routes.js';
-import { setChannels, setChannel } from '../slices/channelsSlice.js';
+import { setChannels, setChannel, deleteChannel, renameChannel} from '../slices/channelsSlice.js';
 import { setMessages, setMessage } from '../slices/messagesSlice.js';
 import { useNavigate } from 'react-router-dom';
 import cn from 'classnames';
-import Modal from '../components/ModalWindow.jsx';
+import AddModalWindow from '../components/modalWindows/AddModalWindow.jsx';
+import RemoveModalWindow from '../components/modalWindows/RemoveModalWindow.jsx';
+import EditModalWindow from '../components/modalWindows/EditModalWindow.jsx';
+
 
 
 export const getAuthHeader = () => {
@@ -18,19 +24,17 @@ export const getAuthHeader = () => {
   return {};
 };
 
+const defaultChannel = { id: '1', name: 'general', removable: false }
 
 const MainPage = ({ socket }) => {
+
   const [currentText, setCurrentText] = useState('');
-  const [currentChannel, setCurrentChannel] = useState({ id: '1', name: 'general', removable: false });
+  const [currentChannel, setCurrentChannel] = useState(defaultChannel);
   const [modalActive, setModalActive] = useState(false);
-  const [changedChannelId, setChangedChannelId] = useState(0);
-  //const [isVisible, setVisible] = useState(false)
-
-  //можно сделать слайс каналов чтобы там хранить активный канал
-
-  //нужно сделать что когда мы создаем канал нас туда перемещает
-
-  
+  const [removeModalActive, setRemoveModalActive] = useState(false);
+  const [idForDelete, setIdForDelete] = useState(0);
+  const [editModalActive, setEditModalActive] = useState(false);
+  const [channelForEdit, setChannelForEdit] = useState('');
 
   const dispatch = useDispatch();
   const channelContent = useSelector(state => state.channels.channels);
@@ -51,10 +55,19 @@ const MainPage = ({ socket }) => {
 
     socket.on('newChannel', (newChannel) => {
       dispatch(setChannel(newChannel))
-
-      //посмотреть, почему-то не переключается нормально, выходит пустой канал
       setCurrentChannel(newChannel)
+    });
+
+    socket.on('removeChannel', (deletedChannelId) => {
+      dispatch(deleteChannel(deletedChannelId))
+      setCurrentChannel(defaultChannel)
+    });
+
+    socket.on('renameChannel', (renamedChannel) => {
+      dispatch(renameChannel(renamedChannel))
+      setCurrentChannel(renamedChannel)
     })
+
 
     return () => {
       socket.off('newMessage', );
@@ -113,8 +126,17 @@ const MainPage = ({ socket }) => {
     }
   };
 
+  const handleDeleteChannelClick = (id) => {
+    setRemoveModalActive(true);
+    setIdForDelete(id)
+  };
 
-  
+  const handleEditChannelClick = (channel) => {
+    setEditModalActive(true);
+    setChannelForEdit(channel)
+  };
+
+
   const renderChannels = () => {
     if (channelContent.length === 0){
       return <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block"></ul>
@@ -124,34 +146,45 @@ const MainPage = ({ socket }) => {
         {channelContent.map((channel) => (
           <li className="nav-item w-100" key={channel.id}>
             {(channel.removable === true) ? 
-              <div role="group" className={cn("d-flex", "dropdown", "btn-group",
-               {'show': channel.id === changedChannelId})} onClick = {() => clickChannelHandler(channel.id)}>
-                <button type="button" className={cn('w-100', 'rounded-0', 'text-start', 'btn', {'btn-secondary': (currentChannel.id === channel.id)})}>
-                  <span className="me-1">#</span>
-                  {channel.name}
-                </button>
-                <button type = "button" id="react-aria276996935-:r0:" aria-expanded={channel.id === changedChannelId}
-                 className={cn("flex-grow-0", "dropdown-toggle", "dropdown-toggle-split", "btn",{'btn-secondary': (currentChannel.id === channel.id)}, {'show': channel.id === changedChannelId})} 
-                 onClick={()=> setChangedChannelId(channel.id)}>
-                  <span className="visually-hidden">
-                    Управление каналом
-                  </span>
-                </button>
-                <div x-placement="bottom-end" aria-labelledby="react-aria276996935-:r0:" className={cn("dropdown-menu", {'show': channel.id === changedChannelId})}
-                  data-popper-reference-hidden="false" data-popper-escaped="false" data-popper-placement="bottom-end" 
-                  style={{
-                    position: 'absolute',
-                    inset: '0px 0px auto auto',
-                    transform: 'translate3d(0px, 40px, 0px)'
-                  }}>
-                  <a data-rr-ui-dropdown-item class="dropdown-item" role="button" tabindex="0" href="#">Удалить</a>
-                  <a data-rr-ui-dropdown-item class="dropdown-item" role="button" tabindex="0" href="#">Переименовать</a>
-                </div>
-              </div>
+
+              <Dropdown as={ButtonGroup} className= "d-flex" onClick = {() => clickChannelHandler(channel.id)}>
+             
+                  <Button 
+                      variant= {(currentChannel.id === channel.id) ? "secondary" : "light"} 
+                      className={cn('w-100', 'rounded-0', 'text-start', 'btn',
+                   {'btn-secondary': (currentChannel.id === channel.id)})}>
+                      <span className="me-1">#</span>
+                      {channel.name}
+                    </Button>
+
+
+                  <Dropdown.Toggle 
+                      split 
+                      variant= {(currentChannel.id === channel.id) ? "secondary" : "light"} 
+                      id="dropdown-channel-control" 
+                      className="flex-grow-0"
+                  >
+                      <span className="visually-hidden">Управление каналом</span>
+                  </Dropdown.Toggle>
+
+                  
+                  <Dropdown.Menu 
+                      className="dropdown-menu" 
+                      style={{ 
+                        position: 'absolute', 
+                        inset: '0px auto auto 0px', 
+                        transform: 'translate(0px, 40px)'
+                      }}
+                    >
+                      <Dropdown.Item href="#" className="dropdown-item" onClick={() => handleDeleteChannelClick(channel.id)}>Удалить</Dropdown.Item>
+                      <Dropdown.Item href="#" className="dropdown-item" onClick={() => handleEditChannelClick(channel)}>Переименовать</Dropdown.Item>
+                  </Dropdown.Menu>
+              </Dropdown>
               : <button type="button" className={cn('w-100', 'rounded-0', 'text-start', 'btn', {'btn-secondary': (currentChannel.id === channel.id)})} onClick = {() => clickChannelHandler(channel.id)}>
                   <span className="me-1">#</span>
                   {channel.name}
                 </button>}
+
           </li>
         ))}
       </ul>
@@ -174,8 +207,6 @@ const MainPage = ({ socket }) => {
       </div>
     );
   };
-
-
 
   return (
     <div className="vh-100"> 
@@ -232,9 +263,12 @@ const MainPage = ({ socket }) => {
           </div>
         </div>
       </div>
-      <Modal active = {modalActive} setActive ={setModalActive}/>
+      <AddModalWindow active = {modalActive} setActive ={setModalActive}/>
+      <RemoveModalWindow active = {removeModalActive} setActive ={setRemoveModalActive} idForDel={idForDelete}/>
+      <EditModalWindow active = {editModalActive} setActive ={setEditModalActive} channelForEd={channelForEdit}/>
     </div> 
   );
 };
+
 
 export default MainPage;
