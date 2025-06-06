@@ -4,23 +4,27 @@ import * as Yup from 'yup';
 import axios from "axios";
 import _ from 'lodash';
 import { Button, Form as BootstrapForm } from 'react-bootstrap';
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { getAuthHeader } from "../../pages/MainPage.jsx";
 import routes from "../../routes.js";
+import { setEditModalActive } from '../../slices/modalSlice.js';
 
 //нужно переиспользовать наше окно
 
-const EditModalWindow = ({ active, setActive, channelForEd }) => {
+const EditModalWindow = () => {
     const [authFailed, setAuthFailed] = useState(false);
+    const dispatch = useDispatch();
+    const isActive = useSelector(state => state.modal.isEditModalActive);
+    const channelForEdit = useSelector(state => state.modal.channelForEdit);
     const currentChannels = useSelector(state => state.channels.channels);
     const channelNames = currentChannels.map(channel => channel.name);
     const inputRef = useRef();
 
     useEffect(() => {
-        if (active && inputRef.current){
+        if (isActive && inputRef.current){
             inputRef.current.focus();
         }
-    }, [active]);
+    }, [isActive]);
 
     const channelScheme = Yup.object().shape({
         channelName: Yup.string()
@@ -30,14 +34,14 @@ const EditModalWindow = ({ active, setActive, channelForEd }) => {
             .required('Обязательное поле')
     });
 
-    if (!active) {
+    if (!isActive) {
         return null
     } else {
         return (
             <>
             <div className="modal-backdrop fade show"></div>
-            <div className={`fade modal ${active ? 'show' : ''}`} 
-                style={{ display: active ? 'block' : 'none' }}>
+            <div className={`fade modal ${isActive ? 'show' : ''}`} 
+                style={{ display: isActive ? 'block' : 'none' }}>
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
                         <div className="modal-header">
@@ -45,12 +49,12 @@ const EditModalWindow = ({ active, setActive, channelForEd }) => {
                             <button 
                                 type="button" 
                                 className="btn btn-close" 
-                                onClick={() => setActive(false)}
+                                onClick={() => dispatch(setEditModalActive(false))}
                             ></button>
                         </div>
                         <div className="modal-body">
                             <Formik
-                                initialValues={{ channelName: channelForEd.name }}
+                                initialValues={{ channelName: channelForEdit.name }}
                                 validationSchema={channelScheme}
                                 onSubmit={async (values, { setSubmitting }) => {
                                     setAuthFailed(false);
@@ -58,11 +62,11 @@ const EditModalWindow = ({ active, setActive, channelForEd }) => {
                                         const newChannelName = {
                                             name: values.channelName,
                                         };
-                                        await axios.patch(routes.channelPath(channelForEd.id), newChannelName, { 
+                                        await axios.patch(routes.channelPath(channelForEdit.id), newChannelName, { 
                                             headers: getAuthHeader() 
                                         });
                                         setSubmitting(false);
-                                        setActive(false);
+                                        dispatch(setEditModalActive(false));
                                     } catch(err) {
                                         setSubmitting(false);
                                         setAuthFailed(true);
@@ -89,7 +93,7 @@ const EditModalWindow = ({ active, setActive, channelForEd }) => {
                                             <Button 
                                                 type="button" 
                                                 className="me-2 btn btn-secondary"
-                                                onClick={() => setActive(false)}
+                                                onClick={() => dispatch(setEditModalActive(false))}
                                             >
                                                 Отменить
                                             </Button>

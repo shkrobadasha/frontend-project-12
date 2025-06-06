@@ -4,23 +4,25 @@ import * as Yup from 'yup';
 import axios from "axios";
 import _ from 'lodash';
 import { Button, Form as BootstrapForm } from 'react-bootstrap';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getAuthHeader } from "../../pages/MainPage.jsx";
 import routes from "../../routes.js";
+import { setAddModalActive } from '../../slices/modalSlice.js';
 
-//нужно переиспользовать наше окно
 
-const AddModalWindow = ({ active, setActive }) => {
+const AddModalWindow = () => {
+    const dispatch = useDispatch();
+    const isActive = useSelector(state => state.modal.isAddModalActive);
     const [authFailed, setAuthFailed] = useState(false);
     const currentChannels = useSelector(state => state.channels.channels);
     const channelNames = currentChannels.map(channel => channel.name);
     const inputRef = useRef();
 
     useEffect(() => {
-        if (active && inputRef.current){
+        if (isActive && inputRef.current){
             inputRef.current.focus();
         }
-    }, [active]);
+    }, [isActive]);
 
     const channelScheme = Yup.object().shape({
         channelName: Yup.string()
@@ -30,14 +32,14 @@ const AddModalWindow = ({ active, setActive }) => {
             .required('Обязательное поле')
     });
 
-    if (!active) {
+    if (!isActive) {
         return null
     } else {
         return (
             <>
             <div className="modal-backdrop fade show"></div>
-            <div className={`fade modal ${active ? 'show' : ''}`} 
-                style={{ display: active ? 'block' : 'none' }}>
+            <div className={`fade modal ${isActive ? 'show' : ''}`} 
+                style={{ display: isActive ? 'block' : 'none' }}>
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
                         <div className="modal-header">
@@ -45,7 +47,7 @@ const AddModalWindow = ({ active, setActive }) => {
                             <button 
                                 type="button" 
                                 className="btn btn-close" 
-                                onClick={() => setActive(false)}
+                                onClick={() => dispatch(setAddModalActive(false))}
                             ></button>
                         </div>
                         <div className="modal-body">
@@ -64,7 +66,7 @@ const AddModalWindow = ({ active, setActive }) => {
                                             headers: getAuthHeader() 
                                         });
                                         setSubmitting(false);
-                                        setActive(false);
+                                        dispatch(setAddModalActive(false));
                                     } catch(err) {
                                         setSubmitting(false);
                                         setAuthFailed(true);
@@ -91,7 +93,7 @@ const AddModalWindow = ({ active, setActive }) => {
                                             <Button 
                                                 type="button" 
                                                 className="me-2 btn btn-secondary"
-                                                onClick={() => setActive(false)}
+                                                onClick={() => dispatch(setAddModalActive(false))}
                                             >
                                                 Отменить
                                             </Button>
