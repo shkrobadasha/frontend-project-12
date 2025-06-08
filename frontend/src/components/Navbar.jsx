@@ -7,7 +7,9 @@ const Navbar = () => {
     const handleLeave = () => {
         navigate('/login');
         localStorage.removeItem('userId');
-    }
+    };
+
+    
 
     return (
         <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white" >

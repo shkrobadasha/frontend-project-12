@@ -1,31 +1,40 @@
-import { Formik, Form, Field } from 'formik';
+import axios from "axios";
 import * as Yup from 'yup';
-import axios from 'axios';
+import { Formik, Form, Field } from 'formik';
 import React, { useState, useEffect, useRef} from 'react';
+import { useNavigate } from "react-router-dom";
 import { Button, Form as BootstrapForm } from 'react-bootstrap';
-import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logIn, logOut } from '../slices/authSlice.js';
-import routes from '../routes.js';
+import routes from "../routes";
 
-const LoginSchema = Yup.object().shape({
-    username: Yup.string().required('Обязательное поле'),
-    password: Yup.string().required('Обязательное поле'),
+
+//нудно сделать чтобы ошибка подсвечивалась красным и не пропадала
+
+const SignupSchema = Yup.object().shape({
+    username: Yup.string()
+    .min(3, "От 3 до 20 символов")
+    .max(20, "От 3 до 20 символов")
+    .required('Обязательное поле'),
+    password: Yup.string()
+    .min(6, "Не менее 6 символов")
+    .required('Обязательное поле'),
+    confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password")], "Пароли должны совпадать")
 });
 
-const LoginPage = () => {
-    const location = useLocation();
-    const dispatch = useDispatch()
-    const navigate = useNavigate();
+const SignUpPage = () => {
     const [authFailed, setAuthFailed] = useState(false);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const inputRef = useRef();
-
+    
     useEffect(() => {
         inputRef.current.focus();
     }, []);
 
     return (
-        <div className="h-100">
+         <div className="h-100">
             <div className="h-100" id="chat"> 
                 <div className="d-flex flex-column h-100" >
                     <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
@@ -38,35 +47,37 @@ const LoginPage = () => {
                             <div className="col-12 col-md-8 col-xxl-6">
                                 <div className="card shadow-sm">
                                     <div className="card-body row p-5">
-                                        <h1 className="text-center mb-4">Войти</h1>
+                                        <h1 className="text-center mb-4">Регистрация</h1>
                                         <Formik
                                             initialValues={{
-                                                username: '',
-                                                password: '',
+                                                username: "",
+                                                password: "",
+                                                confirmPassword: "",
                                             }}
-                                            validationSchema={LoginSchema}
-                                            onSubmit={async (values, { setSubmitting, setErrors }) => {
-                                                setAuthFailed(false)
-                                                try {
-                                                    const res = await axios.post(routes.loginPath(), values);
+                                            validationSchema={SignupSchema}
+                                            onSubmit={async (values, {setSubmitting, setErrors}) => {
+                                               const {username, password} = values;
+                                               setAuthFailed(false);
+                                               try {
+                                                    const res = await axios.post(routes.signUpPath(), {username, password})
                                                     localStorage.setItem('userId', JSON.stringify(res.data));
                                                     localStorage.setItem('user', values.username);
                                                     dispatch(logIn())
-                                                    const { from } = location.state || { from: { pathname: '/' } };
-                                                    navigate(from);
+                                                    navigate("/");
                                                 } catch (err) {
                                                     setSubmitting(false);
-                                                    if (err.isAxiosError && err.response?.status === 401) {
+                                                    if (err.isAxiosError && err.response?.status === 409) {
                                                         setAuthFailed(true);
                                                         inputRef.current.select();
                                                         setErrors({
-                                                            password: 'Неверный логин или пароль',
+                                                            confirmPassword: 'Такой пользователь уже существует',
                                                         });
                                                         return;
                                                     }
                                                     throw err;
                                                 }
                                             }}
+                                        
                                         >
                                             {({ errors, touched }) => (
                                                 <Form>
@@ -76,7 +87,7 @@ const LoginPage = () => {
                                                             as={BootstrapForm.Control}
                                                             type="text"
                                                             name="username"
-                                                            isInvalid={authFailed}
+                                                             isInvalid={touched.username && errors.username || authFailed} 
                                                             ref={inputRef}
                                                         />
                                                         {errors.username && touched.username ? (
@@ -89,34 +100,38 @@ const LoginPage = () => {
                                                             as={BootstrapForm.Control}
                                                             type="password"
                                                             name="password"
-                                                            isInvalid={authFailed}
+                                                            isInvalid={touched.password && errors.password || authFailed}
                                                         />
                                                         {errors.password && touched.password ? (
-                                                                <div className="invalid-feedback">{errors.password}</div>
+                                                            <div className="invalid-feedback">{errors.password}</div>
                                                             ): null}
                                                     </BootstrapForm.Group>
-                                                    <Button type='submit' variant="outline-primary" className="w-100 mb-3 btn btn-outline-primary">Войти</Button>
+                                                    <BootstrapForm.Group className="mb-3" controlId="confirmPassword">
+                                                        <BootstrapForm.Label>Подтвердить пароль</BootstrapForm.Label>
+                                                        <Field
+                                                            as={BootstrapForm.Control}
+                                                            type="password"
+                                                            name="confirmPassword"
+                                                            isInvalid={touched.confirmPassword && errors.confirmPassword || authFailed}
+                                                        />
+                                                        {errors.confirmPassword && touched.confirmPassword ? (
+                                                                <div className="invalid-feedback">{errors.confirmPassword}</div>
+                                                            ): null}
+                                                    </BootstrapForm.Group>
+                                                    <Button type='submit' variant="outline-primary" className="w-100 mb-3 btn btn-outline-primary">Зарегестрироваться</Button>
                                                 </Form>
                                             )}
+
                                         </Formik>
-
                                     </div>
-                                    <div className="card-footer p-4">
-                                        <div className="text-center">
-                                            <sраn>Нет аккаунта?</sраn>
-                                            <a href="/signup"> Регистрация</a>
-                                        </div>
-                                    </div>
-
                                 </div>
-
                             </div>
                         </div>
-                    </div> 
+                    </div>
                 </div>
             </div>
         </div>
     );
 };
 
-export default LoginPage;
+export default SignUpPage;
