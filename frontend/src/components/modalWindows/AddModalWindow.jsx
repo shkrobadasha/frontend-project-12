@@ -28,10 +28,10 @@ const AddModalWindow = () => {
 
     const channelScheme = Yup.object().shape({
         channelName: Yup.string()
-            .min(3, 'От 3 до 20 символов')
-            .max(20, 'От 3 до 20 символов')
-            .notOneOf(channelNames, 'Должно быть уникальным')
-            .required('Обязательное поле')
+            .min(3, t("errors.nameLengthError"))
+            .max(20, t("errors.nameLengthError"))
+            .notOneOf(channelNames, t('errors.alreadyExistsChannelError'))
+            .required(t('errors.requiredField'))
     });
 
     if (!isActive) {

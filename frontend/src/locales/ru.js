@@ -3,6 +3,7 @@ export default {
         navbarTitle: "My Chat",
         userName: "Имя пользователя",
         password: "Пароль",
+        exitButton: "Выйти",
         loginPage: {
             loginTitle: 'Войти',
             title: "Нет аккаунта?",

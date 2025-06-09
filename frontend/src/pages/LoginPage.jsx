@@ -10,14 +10,15 @@ import { useDispatch } from 'react-redux';
 import { logIn, logOut } from '../slices/authSlice.js';
 import routes from '../routes.js';
 
-const LoginSchema = Yup.object().shape({
-    username: Yup.string().required('Обязательное поле'),
-    password: Yup.string().required('Обязательное поле'),
-});
 
 const LoginPage = () => {
 
     const { t } = useTranslation();
+
+    const LoginSchema = Yup.object().shape({
+        username: Yup.string().required(t('errors.requiredField')),
+        password: Yup.string().required(t('errors.requiredField')),
+    });
 
     const location = useLocation();
     const dispatch = useDispatch()
@@ -65,7 +66,7 @@ const LoginPage = () => {
                                                         setAuthFailed(true);
                                                         inputRef.current.select();
                                                         setErrors({
-                                                            password: 'Неверный логин или пароль',
+                                                            password: t("errors.loginError"),
                                                         });
                                                         return;
                                                     }

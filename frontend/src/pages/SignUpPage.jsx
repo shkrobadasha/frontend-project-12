@@ -10,24 +10,27 @@ import { logIn, logOut } from '../slices/authSlice.js';
 import routes from "../routes";
 
 
-const SignupSchema = Yup.object().shape({
-    username: Yup.string()
-    .min(3, "От 3 до 20 символов")
-    .max(20, "От 3 до 20 символов")
-    .required('Обязательное поле'),
-    password: Yup.string()
-    .min(6, "Не менее 6 символов")
-    .required('Обязательное поле'),
-    confirmPassword: Yup.string()
-    .oneOf([Yup.ref("password")], "Пароли должны совпадать")
-});
 
 const SignUpPage = () => {
+    const { t } = useTranslation();
+
+    const SignupSchema = Yup.object().shape({
+        username: Yup.string()
+        .min(3, t("errors.nameLengthError"))
+        .max(20, t("errors.nameLengthError"))
+        .required(t("errors.requiredField")),
+        password: Yup.string()
+        .min(6, t("errors.passwordLengthError"))
+        .required(t("errors.requiredField")),
+        confirmPassword: Yup.string()
+        .oneOf([Yup.ref("password")], t("errors.confirmPasswordError"))
+    });
+
     const [authFailed, setAuthFailed] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const inputRef = useRef();
-    const { t } = useTranslation();
+    
     
     
     useEffect(() => {
@@ -71,7 +74,7 @@ const SignUpPage = () => {
                                                         setAuthFailed(true);
                                                         inputRef.current.select();
                                                         setErrors({
-                                                            confirmPassword: 'Такой пользователь уже существует',
+                                                            confirmPassword: t("errors.alreadyExistsUserError"),
                                                         });
                                                         return;
                                                     }
