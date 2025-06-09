@@ -17,8 +17,10 @@
     "bootstrap": "^5.3.6",
     "classnames": "^2.5.1",
     "formik": "^2.4.6",
+    "i18next": "^25.2.1",
     "lodash": "^4.17.21",
     "react-bootstrap": "^2.10.10",
+    "react-i18next": "^15.5.2",
     "react-redux": "^9.2.0",
     "yup": "^1.6.1"
   }

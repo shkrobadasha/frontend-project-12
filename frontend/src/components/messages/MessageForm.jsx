@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { getAuthHeader } from "../../pages/MainPage";
 import { setCurrentText } from "../../slices/messagesSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import routes from "../../routes";
 
 
@@ -10,6 +11,7 @@ const MessageForm = () => {
     const dispatch = useDispatch();
     const currentText = useSelector(state => state.messages.currentText);
     const currentChannel = useSelector(state => state.channels.currentChannel)
+    const { t } = useTranslation();
 
     const handleSendMessage = async (e) => {
         e.preventDefault();
@@ -42,7 +44,7 @@ const MessageForm = () => {
                     <input 
                         name="body" 
                         aria-label="Новое сообщение" 
-                        placeholder="Введите сообщение..." 
+                        placeholder={t("mainPage.messagesDefaultText")}
                         className="border-0 p-0 ps-2 form-control"
                         value={currentText} 
                         onChange={handleInputChange}

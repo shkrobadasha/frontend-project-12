@@ -2,6 +2,7 @@ import React, { useState} from 'react';
 import axios from "axios";
 import _ from 'lodash';
 import { useDispatch,useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { Button } from 'react-bootstrap';
 import { getAuthHeader } from "../../pages/MainPage.jsx";
 import routes from "../../routes.js";
@@ -9,7 +10,7 @@ import { setRemoveModalActive } from '../../slices/modalSlice.js';
 
 const RemoveModalWindow = () => {
     const [authFailed, setAuthFailed] = useState(false);    
-
+    const {t} = useTranslation();
     const dispatch = useDispatch();
     const isActive = useSelector(state => state.modal.isRemoveModalActive);
     const idForRemove = useSelector(state => state.modal.idForRemove);
@@ -35,7 +36,7 @@ const RemoveModalWindow = () => {
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <div className="modal-title h4">Удалить канал</div>
+                            <div className="modal-title h4">{t("modalWindow.windowsTitles.removeTitle")}</div>
                             <button 
                                 type="button" 
                                 className="btn btn-close" 
@@ -43,21 +44,21 @@ const RemoveModalWindow = () => {
                             ></button>
                         </div>
                         <div className="modal-body">
-                            <p class="lead"> Уверены? </p>
+                            <p class="lead"> {t("modalWindow.windowsTitles.clarifyingRemoveTitle")} </p>
                             <div className="d-flex justify-content-end">
                                 <Button 
                                     type="button" 
                                     className="me-2 btn btn-secondary"
                                     onClick={() => dispatch(setRemoveModalActive(false))}
                                 >
-                                    Отменить
+                                    {t("modalWindow.windowsButtons.cancelButton")}
                                 </Button>
                                 <Button 
                                     type="button" 
                                     className="btn btn-danger"
                                     onClick ={() => deleteHandler()}
                                 >
-                                    Удалить
+                                    {t("modalWindow.windowsButtons.removeButton")}
                                 </Button>
                             </div>
                         </div>

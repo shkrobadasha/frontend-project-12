@@ -2,6 +2,8 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import React, { useState, useEffect, useRef} from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { Button, Form as BootstrapForm } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -14,6 +16,9 @@ const LoginSchema = Yup.object().shape({
 });
 
 const LoginPage = () => {
+
+    const { t } = useTranslation();
+
     const location = useLocation();
     const dispatch = useDispatch()
     const navigate = useNavigate();
@@ -30,7 +35,7 @@ const LoginPage = () => {
                 <div className="d-flex flex-column h-100" >
                     <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
                         <div className="container">
-                            <a class="navbar-brand" href="/">My Chat</a>
+                            <a class="navbar-brand" href="/">{t("navbarTitle")}</a>
                         </div>
                     </nav>
                     <div className="container-fluid h-100">
@@ -38,7 +43,7 @@ const LoginPage = () => {
                             <div className="col-12 col-md-8 col-xxl-6">
                                 <div className="card shadow-sm">
                                     <div className="card-body row p-5">
-                                        <h1 className="text-center mb-4">Войти</h1>
+                                        <h1 className="text-center mb-4">{t("loginPage.loginTitle")}</h1>
                                         <Formik
                                             initialValues={{
                                                 username: '',
@@ -71,7 +76,7 @@ const LoginPage = () => {
                                             {({ errors, touched }) => (
                                                 <Form>
                                                     <BootstrapForm.Group className="mb-3" controlId="username">
-                                                        <BootstrapForm.Label>Имя пользователя</BootstrapForm.Label>
+                                                        <BootstrapForm.Label>{t("userName")}</BootstrapForm.Label>
                                                         <Field
                                                             as={BootstrapForm.Control}
                                                             type="text"
@@ -84,7 +89,7 @@ const LoginPage = () => {
                                                             ): null}
                                                     </BootstrapForm.Group>
                                                     <BootstrapForm.Group className="mb-3" controlId="password">
-                                                        <BootstrapForm.Label>Пароль</BootstrapForm.Label>
+                                                        <BootstrapForm.Label>{t("password")}</BootstrapForm.Label>
                                                         <Field
                                                             as={BootstrapForm.Control}
                                                             type="password"
@@ -95,7 +100,7 @@ const LoginPage = () => {
                                                                 <div className="invalid-feedback">{errors.password}</div>
                                                             ): null}
                                                     </BootstrapForm.Group>
-                                                    <Button type='submit' variant="outline-primary" className="w-100 mb-3 btn btn-outline-primary">Войти</Button>
+                                                    <Button type='submit' variant="outline-primary" className="w-100 mb-3 btn btn-outline-primary">{t("loginPage.loginTitle")}</Button>
                                                 </Form>
                                             )}
                                         </Formik>
@@ -103,8 +108,8 @@ const LoginPage = () => {
                                     </div>
                                     <div className="card-footer p-4">
                                         <div className="text-center">
-                                            <sраn>Нет аккаунта?</sраn>
-                                            <a href="/signup"> Регистрация</a>
+                                            <sраn>{t("loginPage.title")}</sраn>
+                                            <a href="/signup">{t("loginPage.signUpLink")}</a>
                                         </div>
                                     </div>
 

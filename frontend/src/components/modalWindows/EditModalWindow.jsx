@@ -4,16 +4,16 @@ import * as Yup from 'yup';
 import axios from "axios";
 import _ from 'lodash';
 import { Button, Form as BootstrapForm } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from "react-redux";
 import { getAuthHeader } from "../../pages/MainPage.jsx";
 import routes from "../../routes.js";
 import { setEditModalActive } from '../../slices/modalSlice.js';
 
-//нужно переиспользовать наше окно
-
 const EditModalWindow = () => {
     const [authFailed, setAuthFailed] = useState(false);
     const dispatch = useDispatch();
+    const {t} = useTranslation();
     const isActive = useSelector(state => state.modal.isEditModalActive);
     const channelForEdit = useSelector(state => state.modal.channelForEdit);
     const currentChannels = useSelector(state => state.channels.channels);
@@ -45,7 +45,7 @@ const EditModalWindow = () => {
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <div className="modal-title h4">Переименовать канал</div>
+                            <div className="modal-title h4">{t("modalWindow.windowsTitles.editTitle")}</div>
                             <button 
                                 type="button" 
                                 className="btn btn-close" 
@@ -95,14 +95,14 @@ const EditModalWindow = () => {
                                                 className="me-2 btn btn-secondary"
                                                 onClick={() => dispatch(setEditModalActive(false))}
                                             >
-                                                Отменить
+                                                {t("modalWindow.windowsButtons.cancelButton")}
                                             </Button>
                                             <Button 
                                                 type="submit" 
                                                 className="btn btn-primary"
                                                 disabled={isSubmitting}
                                             >
-                                                Отправить
+                                                {t("modalWindow.windowsButtons.sendButton")}
                                             </Button>
                                         </div>
                                     </Form>

@@ -3,6 +3,7 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import axios from "axios";
 import _ from 'lodash';
+import { useTranslation } from 'react-i18next';
 import { Button, Form as BootstrapForm } from 'react-bootstrap';
 import { useDispatch, useSelector } from "react-redux";
 import { getAuthHeader } from "../../pages/MainPage.jsx";
@@ -12,6 +13,7 @@ import { setAddModalActive } from '../../slices/modalSlice.js';
 
 const AddModalWindow = () => {
     const dispatch = useDispatch();
+    const {t} = useTranslation();
     const isActive = useSelector(state => state.modal.isAddModalActive);
     const [authFailed, setAuthFailed] = useState(false);
     const currentChannels = useSelector(state => state.channels.channels);
@@ -43,7 +45,7 @@ const AddModalWindow = () => {
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <div className="modal-title h4">Добавить канал</div>
+                            <div className="modal-title h4">{t("modalWindow.windowsTitles.addTitle")}</div>
                             <button 
                                 type="button" 
                                 className="btn btn-close" 
@@ -77,7 +79,6 @@ const AddModalWindow = () => {
                                 {({ errors, touched, isSubmitting }) => (
                                     <Form >
                                         <BootstrapForm.Group className="mb-3">
-                                            <BootstrapForm.Label>Имя канала</BootstrapForm.Label>
                                             <Field
                                                 as={BootstrapForm.Control}
                                                 type="text"
@@ -95,14 +96,14 @@ const AddModalWindow = () => {
                                                 className="me-2 btn btn-secondary"
                                                 onClick={() => dispatch(setAddModalActive(false))}
                                             >
-                                                Отменить
+                                                {t("modalWindow.windowsButtons.cancelButton")}
                                             </Button>
                                             <Button 
                                                 type="submit" 
                                                 className="btn btn-primary"
                                                 disabled={isSubmitting}
                                             >
-                                                Отправить
+                                                {t("modalWindow.windowsButtons.sendButton")}
                                             </Button>
                                         </div>
                                     </Form>

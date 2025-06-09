@@ -2,14 +2,13 @@ import axios from "axios";
 import * as Yup from 'yup';
 import { Formik, Form, Field } from 'formik';
 import React, { useState, useEffect, useRef} from 'react';
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Button, Form as BootstrapForm } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { logIn, logOut } from '../slices/authSlice.js';
 import routes from "../routes";
 
-
-//нудно сделать чтобы ошибка подсвечивалась красным и не пропадала
 
 const SignupSchema = Yup.object().shape({
     username: Yup.string()
@@ -28,6 +27,8 @@ const SignUpPage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const inputRef = useRef();
+    const { t } = useTranslation();
+    
     
     useEffect(() => {
         inputRef.current.focus();
@@ -39,7 +40,7 @@ const SignUpPage = () => {
                 <div className="d-flex flex-column h-100" >
                     <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
                         <div className="container">
-                            <a class="navbar-brand" href="/">My Chat</a>
+                            <a class="navbar-brand" href="/">{t("navbarTitle")}</a>
                         </div>
                     </nav>
                     <div className="container-fluid h-100">
@@ -47,7 +48,7 @@ const SignUpPage = () => {
                             <div className="col-12 col-md-8 col-xxl-6">
                                 <div className="card shadow-sm">
                                     <div className="card-body row p-5">
-                                        <h1 className="text-center mb-4">Регистрация</h1>
+                                        <h1 className="text-center mb-4">{t("signUpPage.signUpTitle")}</h1>
                                         <Formik
                                             initialValues={{
                                                 username: "",
@@ -82,7 +83,7 @@ const SignUpPage = () => {
                                             {({ errors, touched }) => (
                                                 <Form>
                                                     <BootstrapForm.Group className="mb-3" controlId="username">
-                                                        <BootstrapForm.Label>Имя пользователя</BootstrapForm.Label>
+                                                        <BootstrapForm.Label>{t("userName")}</BootstrapForm.Label>
                                                         <Field
                                                             as={BootstrapForm.Control}
                                                             type="text"
@@ -95,7 +96,7 @@ const SignUpPage = () => {
                                                             ): null}
                                                     </BootstrapForm.Group>
                                                     <BootstrapForm.Group className="mb-3" controlId="password">
-                                                        <BootstrapForm.Label>Пароль</BootstrapForm.Label>
+                                                        <BootstrapForm.Label>{t("password")}</BootstrapForm.Label>
                                                         <Field
                                                             as={BootstrapForm.Control}
                                                             type="password"
@@ -107,7 +108,7 @@ const SignUpPage = () => {
                                                             ): null}
                                                     </BootstrapForm.Group>
                                                     <BootstrapForm.Group className="mb-3" controlId="confirmPassword">
-                                                        <BootstrapForm.Label>Подтвердить пароль</BootstrapForm.Label>
+                                                        <BootstrapForm.Label>{t("signUpPage.confirmPassword")}</BootstrapForm.Label>
                                                         <Field
                                                             as={BootstrapForm.Control}
                                                             type="password"
@@ -118,7 +119,7 @@ const SignUpPage = () => {
                                                                 <div className="invalid-feedback">{errors.confirmPassword}</div>
                                                             ): null}
                                                     </BootstrapForm.Group>
-                                                    <Button type='submit' variant="outline-primary" className="w-100 mb-3 btn btn-outline-primary">Зарегестрироваться</Button>
+                                                    <Button type='submit' variant="outline-primary" className="w-100 mb-3 btn btn-outline-primary">{t("signUpPage.signUpButton")}</Button>
                                                 </Form>
                                             )}
 

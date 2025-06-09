@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
 import cn from 'classnames';
+import { useTranslation } from 'react-i18next';
 import { setCurrentChannel } from '../../slices/channelsSlice.js';
 import { useSelector, useDispatch } from 'react-redux';
 import { setRemoveModalActive, setIdForRemove, setEditModalActive, setChannelForEdit} from '../../slices/modalSlice.js';
@@ -11,6 +12,7 @@ const RemovableChannel = ({channelData}) => {
 
     const dispatch = useDispatch();
     const currentChannel = useSelector(state => state.channels.currentChannel);
+    const {t} = useTranslation();
 
     const clickChannelHandler = (channelData) => {
         dispatch(setCurrentChannel(channelData))
@@ -54,8 +56,8 @@ const RemovableChannel = ({channelData}) => {
                     transform: 'translate(0px, 40px)'
                 }}
             >
-                <Dropdown.Item href="#" className="dropdown-item" onClick={() => handleDeleteChannelClick(channelData.id)}>Удалить</Dropdown.Item>
-                <Dropdown.Item href="#" className="dropdown-item" onClick={() => handleEditChannelClick(channelData)}>Переименовать</Dropdown.Item>
+                <Dropdown.Item href="#" className="dropdown-item" onClick={() => handleDeleteChannelClick(channelData.id)}>{t("dropdownMenu.removeField")}</Dropdown.Item>
+                <Dropdown.Item href="#" className="dropdown-item" onClick={() => handleEditChannelClick(channelData)}>{t("dropdownMenu.editField")}</Dropdown.Item>
             </Dropdown.Menu>
         </Dropdown>
     )
