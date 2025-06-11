@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef} from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
 import _ from 'lodash';
 import { Button, Form as BootstrapForm } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
@@ -68,6 +69,11 @@ const EditModalWindow = () => {
                                         setSubmitting(false);
                                         dispatch(setEditModalActive(false));
                                     } catch(err) {
+                                        if (err.isAxiosError ) {
+                                            toast.error(t("errors.serverLoadDataError"))
+                                        } else {
+                                            toast.error(t("errors.networkError"))
+                                        }                                       
                                         setSubmitting(false);
                                         setAuthFailed(true);
                                     }
@@ -112,6 +118,7 @@ const EditModalWindow = () => {
                     </div>
                 </div>
             </div>
+            <ToastContainer/>
         </>
         );
     }

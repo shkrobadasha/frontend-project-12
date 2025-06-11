@@ -1,5 +1,6 @@
 import React, { useState} from 'react';
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
 import _ from 'lodash';
 import { useDispatch,useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -20,7 +21,12 @@ const RemoveModalWindow = () => {
         try {
             await axios.delete(routes.channelPath(idForRemove), {headers: getAuthHeader()});
             dispatch(setRemoveModalActive(false))
-        } catch {
+        } catch (err){
+            if (err.isAxiosError ) {
+                 toast.error(t("errors.serverLoadDataError"))
+            } else {
+                toast.error(t("errors.networkError"))
+            }   
             setAuthFailed(true);
         }
     }
@@ -65,6 +71,7 @@ const RemoveModalWindow = () => {
                     </div>
                 </div>
             </div>
+            <ToastContainer/>
         </>
         );
     }

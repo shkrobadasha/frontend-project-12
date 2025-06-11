@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import React, { useState, useEffect, useRef} from 'react';
 import { useTranslation } from 'react-i18next';
-
+import { ToastContainer, toast } from 'react-toastify';
 import { Button, Form as BootstrapForm } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -61,16 +61,23 @@ const LoginPage = () => {
                                                     const { from } = location.state || { from: { pathname: '/' } };
                                                     navigate(from);
                                                 } catch (err) {
+                                                    console.log(err)
                                                     setSubmitting(false);
-                                                    if (err.isAxiosError && err.response?.status === 401) {
-                                                        setAuthFailed(true);
-                                                        inputRef.current.select();
-                                                        setErrors({
-                                                            password: t("errors.loginError"),
-                                                        });
-                                                        return;
+                                                    if (err.isAxiosError ) {
+                                                        if (err.response?.status === 401) {
+                                                            setErrors({
+                                                                password: t("errors.loginError"),
+                                                            });
+                                                            return;
+                                                        } else {
+                                                            toast.error(t("errors.serverLoadDataError"))
+                                                            return;
+                                                        }
                                                     }
-                                                    throw err;
+                                                    setAuthFailed(true);
+                                                    inputRef.current.select();
+                                                    toast.error(t("errors.networkError"))
+                                                    return;
                                                 }
                                             }}
                                         >
@@ -121,6 +128,7 @@ const LoginPage = () => {
                     </div> 
                 </div>
             </div>
+            <ToastContainer />
         </div>
     );
 };

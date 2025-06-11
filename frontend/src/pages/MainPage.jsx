@@ -2,6 +2,7 @@ import React, { useEffect} from 'react';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import _ from 'lodash';
+import { ToastContainer, toast } from 'react-toastify';
 import routes from '../routes.js';
 import { setChannels, setChannel, deleteChannel, renameChannel, setCurrentChannel} from '../slices/channelsSlice.js';
 import { setMessages, setMessage } from '../slices/messagesSlice.js';
@@ -20,11 +21,13 @@ export const getAuthHeader = () => {
   return {};
 };
 
+
 const defaultChannel = { id: '1', name: 'general', removable: false }
 
 const MainPage = ({ socket }) => {
 
   const dispatch = useDispatch();
+  const notify = (text) => toast(text);
 
   useEffect(() => {
     if (!socket) return;
@@ -36,16 +39,19 @@ const MainPage = ({ socket }) => {
     socket.on('newChannel', (newChannel) => {
       dispatch(setChannel(newChannel))
       dispatch(setCurrentChannel(newChannel))
+      notify("Канал создан")
     });
 
     socket.on('removeChannel', (deletedChannelId) => {
       dispatch(deleteChannel(deletedChannelId))
       dispatch(setCurrentChannel(defaultChannel))
+      notify("Канал удален")
     });
 
     socket.on('renameChannel', (renamedChannel) => {
       dispatch(renameChannel(renamedChannel))
       dispatch(setCurrentChannel(renamedChannel))
+      notify("Канал переименован")
     })
 
     return () => {
@@ -66,7 +72,11 @@ const MainPage = ({ socket }) => {
         dispatch(setChannels(channelsRes.data));
         dispatch(setMessages(mes.data));
       } catch (error) {
-        console.error('Error fetching data:', error);
+        if (error.isAxiosError ) {
+          toast.error(t("errors.serverLoadDataError"))
+        } else {
+           toast.error(t("errors.networkError"))
+        }
       }
     };
     fetchContent();
@@ -87,6 +97,7 @@ const MainPage = ({ socket }) => {
           </div>
         </div>
       </div>
+      <ToastContainer />
       <AddModalWindow />
       <RemoveModalWindow />
       <EditModalWindow />

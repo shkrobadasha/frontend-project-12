@@ -17,8 +17,6 @@ export default {
         mainPage: {
             channelsTitle: "Каналы",
             messagesDefaultText: "Введите сообщение...",
-            
-            //добавить эти в и спользование
             messagesCounter: {
                 count_one: '{{count}} сообщение',
                 count_few: '{{count}} сообщения',
@@ -54,7 +52,8 @@ export default {
             confirmPasswordError: "Пароли должны совпадать",
             alreadyExistsUserError: "Такой пользователь уже существует",
             alreadyExistsChannelError:"Должно быть уникальным",
-
+            networkError: "Нет соединения с интернетом",
+            serverLoadDataError: "Ошибка загрузки данных",
 
         }
 

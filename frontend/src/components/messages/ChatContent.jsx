@@ -1,8 +1,10 @@
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import MessageForm from "./MessageForm";
 
 
 const ChatContent = () => {
+    const {t} = useTranslation();
     const currentMessages = useSelector(state => state.messages.messages);
     const currentChannel = useSelector(state =>state.channels.currentChannel);
 
@@ -34,7 +36,7 @@ const ChatContent = () => {
                 <p className="m-0">
                     <b># {currentChannel.name}</b>
                 </p>
-                <span className="text-muted">{getMessagesOfCurrentChannel(currentMessages).length} сообщений</span>
+                <span className="text-muted">{t('mainPage.messagesCounter.count', {count: getMessagesOfCurrentChannel(currentMessages).length})}</span>
             </div>
             {renderMessages()}
             <MessageForm />

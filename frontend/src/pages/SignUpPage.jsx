@@ -1,4 +1,5 @@
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
 import * as Yup from 'yup';
 import { Formik, Form, Field } from 'formik';
 import React, { useState, useEffect, useRef} from 'react';
@@ -30,8 +31,6 @@ const SignUpPage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const inputRef = useRef();
-    
-    
     
     useEffect(() => {
         inputRef.current.focus();
@@ -70,15 +69,21 @@ const SignUpPage = () => {
                                                     navigate("/");
                                                 } catch (err) {
                                                     setSubmitting(false);
-                                                    if (err.isAxiosError && err.response?.status === 409) {
-                                                        setAuthFailed(true);
-                                                        inputRef.current.select();
-                                                        setErrors({
-                                                            confirmPassword: t("errors.alreadyExistsUserError"),
-                                                        });
-                                                        return;
+                                                    if (err.isAxiosError) {
+                                                        if (err.response?.status === 409) {
+                                                            setErrors({
+                                                                confirmPassword: t("errors.alreadyExistsUserError"),
+                                                            });
+                                                            return;
+                                                        } else {
+                                                            toast.error(t("errors.serverLoadDataError"))
+                                                            return
+                                                        }  
                                                     }
-                                                    throw err;
+                                                    toast.error(t("errors.networkError"))
+                                                    setAuthFailed(true);
+                                                    inputRef.current.select();
+                                                    return
                                                 }
                                             }}
                                         
@@ -134,6 +139,7 @@ const SignUpPage = () => {
                     </div>
                 </div>
             </div>
+            <ToastContainer/>
         </div>
     );
 };

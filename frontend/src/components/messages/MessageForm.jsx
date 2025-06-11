@@ -1,5 +1,6 @@
 import axios from "axios";
 import _ from 'lodash';
+import { ToastContainer, toast } from 'react-toastify';
 import { getAuthHeader } from "../../pages/MainPage";
 import { setCurrentText } from "../../slices/messagesSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,7 +30,10 @@ const MessageForm = () => {
                 );
                 dispatch(setCurrentText(''));
             } catch (err) {
-                console.error('Error sending message:', err);
+                if (err.isAxiosError) {
+                    toast.err(t("errors.serverLoadDataError"))
+                }
+                toast.err(t("errors.networkError"))                                               
         }
     };
 
@@ -49,11 +53,12 @@ const MessageForm = () => {
                         value={currentText} 
                         onChange={handleInputChange}
                     />
-                    <button type="submit" className="btn btn-group-vertical"> 
-                        <span className="visually-hidden">Отправить</span>
+                    <button type="submit" className="btn btn-primary"> 
+                         {t("modalWindow.windowsButtons.sendButton")}
                     </button>
                 </div>
             </form>
+            <ToastContainer/>
         </div>
     )
 

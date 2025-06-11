@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef} from 'react';
 import { Formik, Form, Field } from 'formik';
+import { ToastContainer, toast } from 'react-toastify';
 import * as Yup from 'yup';
 import axios from "axios";
 import _ from 'lodash';
@@ -70,6 +71,11 @@ const AddModalWindow = () => {
                                         setSubmitting(false);
                                         dispatch(setAddModalActive(false));
                                     } catch(err) {
+                                        if (err.isAxiosError ) {
+                                                toast.error(t("errors.serverLoadDataError"))
+                                        } else {
+                                            toast.error(t("errors.networkError"))
+                                        }
                                         setSubmitting(false);
                                         setAuthFailed(true);
                                     }
@@ -113,6 +119,7 @@ const AddModalWindow = () => {
                     </div>
                 </div>
             </div>
+            <ToastContainer/>
         </>
         );
     }

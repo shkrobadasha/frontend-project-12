@@ -9,10 +9,11 @@ const Navbar = () => {
     const handleLeave = () => {
         navigate('/login');
         localStorage.removeItem('userId');
+        //localStorage.clear();
     };
 
     
-
+//надо при разлогине очищать localstorage
     return (
         <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white" >
             <div class="container">
