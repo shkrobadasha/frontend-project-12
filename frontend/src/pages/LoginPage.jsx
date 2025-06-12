@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux';
 import { logIn, logOut } from '../slices/authSlice.js';
 import routes from '../routes.js';
 
+//то есть при добавлении делать звездочками
 
 const LoginPage = () => {
 

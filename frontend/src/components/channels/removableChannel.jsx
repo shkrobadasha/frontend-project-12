@@ -2,6 +2,7 @@
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
+import * as Profanity from 'leo-profanity';
 import cn from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { setCurrentChannel } from '../../slices/channelsSlice.js';
@@ -35,7 +36,8 @@ const RemovableChannel = ({channelData}) => {
                 className={cn('w-100', 'rounded-0', 'text-start', 'btn',
                 {'btn-secondary': (currentChannel.id === channelData.id)})}>
                 <span className="me-1">#</span>
-                {channelData.name}
+                {Profanity.check(channelData.name) ? Profanity.clean(channelData.name):channelData.name}
+      
             </Button>
 
             <Dropdown.Toggle 
