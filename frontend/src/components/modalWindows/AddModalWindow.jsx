@@ -19,7 +19,7 @@ const AddModalWindow = () => {
     const [authFailed, setAuthFailed] = useState(false);
     const currentChannels = useSelector(state => state.channels.channels);
     const channelNames = currentChannels.map(channel => channel.name);
-    const inputRef = useRef();
+    const inputRef = useRef(null);
 
     useEffect(() => {
         if (isActive && inputRef.current){

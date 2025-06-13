@@ -1,7 +1,7 @@
 export default {
     translation: {
         navbarTitle: "My Chat",
-        userName: "Имя пользователя",
+        userName: "Ваш ник",
         password: "Пароль",
         exitButton: "Выйти",
         loginPage: {
@@ -11,7 +11,8 @@ export default {
         },
         signUpPage: {
             signUpTitle: "Регистрация",
-            confirmPassword: "Подтвердить пароль",
+            userName: "Имя пользователя",
+            confirmPassword: "Подтвердите пароль",
             signUpButton: "Зарегестрироваться"
         },
         mainPage: {
@@ -46,17 +47,16 @@ export default {
         },
         errors:{
             requiredField: "Обязательное поле",
-            loginError: "Неверный логин или пароль",
+            loginError: "Неверные имя пользователя или пароль",
             nameLengthError: "От 3 до 20 символов",
             passwordLengthError: "Не менее 6 символов",
             confirmPasswordError: "Пароли должны совпадать",
             alreadyExistsUserError: "Такой пользователь уже существует",
             alreadyExistsChannelError:"Должно быть уникальным",
-            networkError: "Нет соединения с интернетом",
+            networkError: "Ошибка соединения",
             serverLoadDataError: "Ошибка загрузки данных",
 
         }
 
     }
 }
-//еще ошибки нужно добави

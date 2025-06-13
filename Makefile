@@ -1,11 +1,13 @@
-install: preinstall
-		npm ci --prefix frontend
+install: preinstall frontend-install
 
 preinstall:
-		npm ci
+	npm ci
+
+frontend-install:
+	npm ci --prefix frontend
 
 build: install
-		npm run build
+	npm run build --prefix frontend
 
 start:
-		npx start-server -s ./frontend/dist
+	npx start-server -s ./frontend/dist

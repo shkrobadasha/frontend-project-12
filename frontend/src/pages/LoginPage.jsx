@@ -24,11 +24,14 @@ const LoginPage = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate();
     const [authFailed, setAuthFailed] = useState(false);
-    const inputRef = useRef();
+    const inputRef = useRef(null);
 
-    /*useEffect(() => {
-        inputRef.current.focus();
-    }, []);*/
+    useEffect(() => {
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, []);
+
 
     return (
         <div className="h-100">
@@ -37,7 +40,6 @@ const LoginPage = () => {
                     <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
                         <div className="container">
                             <a class="navbar-brand" href="/">{t("navbarTitle")}</a>
-                            <button onClick={() => { throw new Error('Тестовая ошибка для Rollbar!') }}></button>
                         </div>
                     </nav>
                     <div className="container-fluid h-100">

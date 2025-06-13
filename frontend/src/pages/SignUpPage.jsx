@@ -30,7 +30,7 @@ const SignUpPage = () => {
     const [authFailed, setAuthFailed] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const inputRef = useRef();
+    const inputRef = useRef(null);
     
     useEffect(() => {
         inputRef.current.focus();
@@ -91,7 +91,7 @@ const SignUpPage = () => {
                                             {({ errors, touched }) => (
                                                 <Form>
                                                     <BootstrapForm.Group className="mb-3" controlId="username">
-                                                        <BootstrapForm.Label>{t("userName")}</BootstrapForm.Label>
+                                                        <BootstrapForm.Label>{t("signUpPage.userName")}</BootstrapForm.Label>
                                                         <Field
                                                             as={BootstrapForm.Control}
                                                             type="text"
