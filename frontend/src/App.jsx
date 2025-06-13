@@ -17,7 +17,7 @@ import SignUpPage from './pages/SignUpPage.jsx';
 
 
 const PrivateRoute = ({ children }) => {
-  const isAuth = useSelector(state => state.auth.loggedIn)
+  const isAuth = localStorage.getItem('userId')
   const location = useLocation();
   return (
     isAuth ? children : <Navigate to="/login" state={{ from: location }} />

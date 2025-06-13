@@ -58,13 +58,12 @@ const LoginPage = () => {
                                                 setAuthFailed(false)
                                                 try {
                                                     const res = await axios.post(routes.loginPath(), values);
-                                                    localStorage.setItem('userId', JSON.stringify(res.data));
+                                                    localStorage.setItem('userId', (res.data.token));
                                                     localStorage.setItem('user', values.username);
                                                     dispatch(logIn())
                                                     const { from } = location.state || { from: { pathname: '/' } };
                                                     navigate(from);
                                                 } catch (err) {
-                                                    console.log(err)
                                                     setSubmitting(false);
                                                     if (err.isAxiosError ) {
                                                         if (err.response?.status === 401) {
