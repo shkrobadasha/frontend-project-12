@@ -10,7 +10,6 @@ import { useDispatch } from 'react-redux';
 import { logIn, logOut } from '../slices/authSlice.js';
 import routes from '../routes.js';
 
-//то есть при добавлении делать звездочками
 
 const LoginPage = () => {
 
@@ -27,9 +26,9 @@ const LoginPage = () => {
     const [authFailed, setAuthFailed] = useState(false);
     const inputRef = useRef();
 
-    useEffect(() => {
+    /*useEffect(() => {
         inputRef.current.focus();
-    }, []);
+    }, []);*/
 
     return (
         <div className="h-100">
@@ -38,6 +37,7 @@ const LoginPage = () => {
                     <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
                         <div className="container">
                             <a class="navbar-brand" href="/">{t("navbarTitle")}</a>
+                            <button onClick={() => { throw new Error('Тестовая ошибка для Rollbar!') }}></button>
                         </div>
                     </nav>
                     <div className="container-fluid h-100">
