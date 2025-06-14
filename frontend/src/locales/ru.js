@@ -1,6 +1,6 @@
 export default {
     translation: {
-        navbarTitle: "My Chat",
+        navbarTitle: 'Hexlet Chat',
         userName: "Ваш ник",
         password: "Пароль",
         exitButton: "Выйти",
