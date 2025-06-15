@@ -16,7 +16,21 @@
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.2",
     "rollbar": "^2.26.0",
-    "socket.io-client": "^4.8.1"
+    "socket.io-client": "^4.8.1",
+
+    "@reduxjs/toolkit": "^2.8.2",
+    "axios": "^1.9.0",
+    "bootstrap": "^5.3.6",
+    "classnames": "^2.5.1",
+    "formik": "^2.4.6",
+    "i18next": "^25.2.1",
+    "leo-profanity": "^1.7.0",
+    "lodash": "^4.17.21",
+    "react-bootstrap": "^2.10.10",
+    "react-i18next": "^15.5.2",
+    "react-redux": "^9.2.0",
+    "react-toastify": "^11.0.5",
+    "yup": "^1.6.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
