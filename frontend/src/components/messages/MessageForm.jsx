@@ -47,7 +47,7 @@ const MessageForm = () => {
                 <div className="input-group has-validation"> 
                     <input 
                         name="body" 
-                        aria-label="Новое сообщение" 
+                        aria-label="Новое сообщение"
                         placeholder={t("mainPage.messagesDefaultText")}
                         className="border-0 p-0 ps-2 form-control"
                         value={currentText} 

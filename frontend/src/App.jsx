@@ -1,5 +1,6 @@
 import React from 'react';
 import { Provider, ErrorBoundary } from '@rollbar/react';
+import { useSelector } from 'react-redux';
 import {
   BrowserRouter,
   Routes,
@@ -11,13 +12,12 @@ import rollbarConfig from './rollbar.js';
 import LoginPage from './pages/LoginPage.jsx';
 import MainPage from './pages/MainPage.jsx' ;
 import NotFoundPage from './pages/NotFoundPage.jsx';
-import { useSelector } from 'react-redux';
 import SignUpPage from './pages/SignUpPage.jsx';
 
 
 
 const PrivateRoute = ({ children }) => {
-  const isAuth = localStorage.getItem('userId')
+  const isAuth = JSON.parse(localStorage.getItem('userId')).token
   const location = useLocation();
   return (
     isAuth ? children : <Navigate to="/login" state={{ from: location }} />

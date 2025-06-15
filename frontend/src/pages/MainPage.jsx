@@ -1,5 +1,6 @@
 import React, { useEffect} from 'react';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import _ from 'lodash';
 import { ToastContainer, toast } from 'react-toastify';
@@ -28,6 +29,7 @@ const MainPage = ({ socket }) => {
 
   const dispatch = useDispatch();
   const notify = (text) => toast(text);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (!socket) return;
@@ -72,6 +74,9 @@ const MainPage = ({ socket }) => {
         dispatch(setChannels(channelsRes.data));
         dispatch(setMessages(mes.data));
       } catch (error) {
+
+        console.log(error)
+
         if (error.isAxiosError ) {
           toast.error(t("errors.serverLoadDataError"))
         } else {

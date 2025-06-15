@@ -58,7 +58,7 @@ const LoginPage = () => {
                                                 setAuthFailed(false)
                                                 try {
                                                     const res = await axios.post(routes.loginPath(), values);
-                                                    localStorage.setItem('userId', (res.data.token));
+                                                    localStorage.setItem('userId', JSON.stringify(res.data));
                                                     localStorage.setItem('user', values.username);
                                                     dispatch(logIn())
                                                     const { from } = location.state || { from: { pathname: '/' } };
