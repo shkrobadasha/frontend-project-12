@@ -87,6 +87,7 @@ const EditModalWindow = () => {
                                             <Field
                                                 as={BootstrapForm.Control}
                                                 type="text"
+                                                id="name"
                                                 name="channelName"
                                                 isInvalid={!!errors.channelName && touched.channelName}
                                                 ref={inputRef}
@@ -94,6 +95,7 @@ const EditModalWindow = () => {
                                             {errors.channelName && touched.channelName && (
                                                 <div className="invalid-feedback">{errors.channelName}</div>
                                             )}
+                                            <label className="visually-hidden" htmlFor="name">{t("modalWindow.windowsTitles.channelName")}</label>
                                         </BootstrapForm.Group>
                                         <div className="d-flex justify-content-end">
                                             <Button 
