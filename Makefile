@@ -4,7 +4,7 @@ preinstall:
 	npm ci
 
 frontend-install:
-    cd frontend && npm ci 
+	cd frontend && npm ci 
 
 build: install
 	npm run build --prefix frontend
