@@ -42,6 +42,7 @@ export default {
                 editTitle: "Переименовать канал",
                 removeTitle: "Удалить канал",
                 clarifyingRemoveTitle: "Уверены?",
+                channelName: "Имя канала",
                 
             },
         },

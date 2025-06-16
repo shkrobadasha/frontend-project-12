@@ -95,6 +95,7 @@ const AddModalWindow = () => {
                                             {errors.channelName && touched.channelName && (
                                                 <div className="invalid-feedback">{errors.channelName}</div>
                                             )}
+                                            <BootstrapForm.Label className="visually-hidden">{t("modalWindow.windowsTitles.channelName")}</BootstrapForm.Label>
                                         </BootstrapForm.Group>
                                         <div className="d-flex justify-content-end">
                                             <Button 
