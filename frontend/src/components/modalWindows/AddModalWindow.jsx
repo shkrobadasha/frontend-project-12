@@ -89,7 +89,7 @@ const AddModalWindow = () => {
                                                 as={BootstrapForm.Control}
                                                 type="text"
                                                 id="name"
-                                                name="name"
+                                                name="channelName"
                                                 isInvalid={!!errors.channelName && touched.channelName}
                                                 ref={inputRef}
                                             />
