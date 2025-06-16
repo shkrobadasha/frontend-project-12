@@ -47,7 +47,7 @@ const MainPage = ({ socket }) => {
     socket.on('removeChannel', (deletedChannelId) => {
       dispatch(deleteChannel(deletedChannelId))
       dispatch(setCurrentChannel(defaultChannel))
-      notify("Канал удален")
+      notify("Канал удалён")
     });
 
     socket.on('renameChannel', (renamedChannel) => {
