@@ -1,13 +1,14 @@
 install: preinstall frontend-install
 
 preinstall:
-	npm ci
+    npm ci
 
 frontend-install:
-	cd frontend && npm ci 
+    rm -rf frontend/node_modules
+    cd frontend && npm install
 
 build: install
-	npm run build --prefix frontend
+    cd frontend && npm run build
 
 start:
-	npx start-server -s ./frontend/dist
+    npx start-server -s ./frontend/dist
