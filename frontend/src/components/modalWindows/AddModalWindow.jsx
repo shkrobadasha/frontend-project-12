@@ -88,14 +88,15 @@ const AddModalWindow = () => {
                                             <Field
                                                 as={BootstrapForm.Control}
                                                 type="text"
-                                                name="channelName"
+                                                id="name"
+                                                name="name"
                                                 isInvalid={!!errors.channelName && touched.channelName}
                                                 ref={inputRef}
                                             />
                                             {errors.channelName && touched.channelName && (
                                                 <div className="invalid-feedback">{errors.channelName}</div>
                                             )}
-                                            <label className="visually-hidden" for="name">{t("modalWindow.windowsTitles.channelName")}</label>
+                                            <label className="visually-hidden" htmlFor="name">{t("modalWindow.windowsTitles.channelName")}</label>
                                         </BootstrapForm.Group>
                                         <div className="d-flex justify-content-end">
                                             <Button 

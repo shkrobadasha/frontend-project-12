@@ -43,7 +43,7 @@ export default {
                 removeTitle: "Удалить канал",
                 clarifyingRemoveTitle: "Уверены?",
                 channelName: "Имя канала",
-                
+
             },
         },
         errors:{
