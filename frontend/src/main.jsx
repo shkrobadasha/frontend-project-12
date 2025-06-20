@@ -6,15 +6,14 @@ import App from './App.jsx'
 import store from './slices/index.js'
 import './styles.css';
 import i18next from './18n.js'
-import { io } from 'socket.io-client';
-
-export const socket = io();
-
+import Socket from './components/Socket.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store = {store}>
-        <App socket = {socket}/>
+      <Socket>
+        <App/>
+      </Socket>
     </Provider>
   </StrictMode>,
 )

@@ -24,7 +24,7 @@ const PrivateRoute = ({ children }) => {
   );
 };
 
-const App = ({socket}) => {
+const App = () => {
      return (
       <Provider config={rollbarConfig}>
         <ErrorBoundary>
@@ -35,7 +35,7 @@ const App = ({socket}) => {
               <Route path="/signup" element={<SignUpPage />} />
               <Route path="/" element = {(
                 <PrivateRoute>
-                  <MainPage socket ={socket}/>
+                  <MainPage />
                 </PrivateRoute>)}/>
             </Routes>
           </BrowserRouter>

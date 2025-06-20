@@ -23,46 +23,13 @@ export const getAuthHeader = () => {
 };
 
 
-const defaultChannel = { id: '1', name: 'general', removable: false }
+//const defaultChannel = { id: '1', name: 'general', removable: false }
 
-const MainPage = ({ socket }) => {
+const MainPage = () => {
 
   const dispatch = useDispatch();
-  const notify = (text) => toast(text);
+  //const notify = (text) => toast(text);
   const { t } = useTranslation();
-
-  useEffect(() => {
-    if (!socket) return;
-    
-    socket.on('newMessage', (newMessage) => {
-      dispatch(setMessage(newMessage));
-    });
-
-    socket.on('newChannel', (newChannel) => {
-      dispatch(setChannel(newChannel))
-      dispatch(setCurrentChannel(newChannel))
-      notify("Канал создан")
-    });
-
-    socket.on('removeChannel', (deletedChannelId) => {
-      dispatch(deleteChannel(deletedChannelId))
-      dispatch(setCurrentChannel(defaultChannel))
-      notify("Канал удалён")
-    });
-
-    socket.on('renameChannel', (renamedChannel) => {
-      dispatch(renameChannel(renamedChannel))
-      dispatch(setCurrentChannel(renamedChannel))
-      notify("Канал переименован")
-    })
-
-    return () => {
-      socket.off('newMessage', );
-      socket.off('newChannel');
-      socket.off('removeChannel');
-      socket.off('renameChannel');
-    };
-  }, [socket, dispatch]);
 
   useEffect(() => {
     const fetchContent = async () => {
