@@ -9,6 +9,7 @@ import { Button, Form as BootstrapForm } from 'react-bootstrap';
 import { useDispatch, useSelector } from "react-redux";
 import { getAuthHeader } from "../../pages/MainPage.jsx";
 import routes from "../../routes.js";
+import { setCurrentChannel } from '../../slices/channelsSlice.js';
 import { setAddModalActive } from '../../slices/modalSlice.js';
 
 
@@ -26,6 +27,13 @@ const AddModalWindow = () => {
             inputRef.current.focus();
         }
     }, [isActive]);
+
+    //нужно поправить эту штуку 
+    useEffect(() => {
+        if (currentChannels && isActive){
+            dispatch(setCurrentChannel(currentChannels[currentChannels.length - 1]))
+        }
+    }, [currentChannels]);
 
     const channelScheme = Yup.object().shape({
         channelName: Yup.string()
@@ -70,6 +78,8 @@ const AddModalWindow = () => {
                                         });
                                         setSubmitting(false);
                                         dispatch(setAddModalActive(false));
+                                        //dispatch(setCurrentChannel(newChannel))
+                                        //dispatch(setCurrentChannel(currentChannels[currentChannels.length - 1]))
                                     } catch(err) {
                                         if (err.isAxiosError ) {
                                                 toast.error(t("errors.serverLoadDataError"))
@@ -79,7 +89,6 @@ const AddModalWindow = () => {
                                         setSubmitting(false);
                                         setAuthFailed(true);
                                     }
-                                    
                                 }}
                             >
                                 {({ errors, touched, isSubmitting }) => (
@@ -112,6 +121,8 @@ const AddModalWindow = () => {
                                                 disabled={isSubmitting}
                                             >
                                                 {t("modalWindow.windowsButtons.sendButton")}
+                                               
+                                                
                                             </Button>
                                         </div>
                                     </Form>
@@ -124,9 +135,8 @@ const AddModalWindow = () => {
             <ToastContainer/>
         </>
         );
-    }
-
-    
+    }    
 };
 
+//{dispatch(setCurrentChannel(currentChannels[-1]))}
 export default AddModalWindow;

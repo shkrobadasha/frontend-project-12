@@ -5,8 +5,8 @@ import axios from 'axios';
 import _ from 'lodash';
 import { ToastContainer, toast } from 'react-toastify';
 import routes from '../routes.js';
-import { setChannels, setChannel, deleteChannel, renameChannel, setCurrentChannel} from '../slices/channelsSlice.js';
-import { setMessages, setMessage } from '../slices/messagesSlice.js';
+import { setChannels} from '../slices/channelsSlice.js';
+import { setMessages} from '../slices/messagesSlice.js';
 import AddModalWindow from '../components/modalWindows/AddModalWindow.jsx';
 import RemoveModalWindow from '../components/modalWindows/RemoveModalWindow.jsx';
 import EditModalWindow from '../components/modalWindows/EditModalWindow.jsx';
@@ -22,13 +22,9 @@ export const getAuthHeader = () => {
   return {};
 };
 
-
-//const defaultChannel = { id: '1', name: 'general', removable: false }
-
 const MainPage = () => {
 
   const dispatch = useDispatch();
-  //const notify = (text) => toast(text);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -41,8 +37,6 @@ const MainPage = () => {
         dispatch(setChannels(channelsRes.data));
         dispatch(setMessages(mes.data));
       } catch (error) {
-
-        console.log(error)
 
         if (error.isAxiosError ) {
           toast.error(t("errors.serverLoadDataError"))

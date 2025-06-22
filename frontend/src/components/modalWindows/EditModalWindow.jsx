@@ -10,6 +10,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getAuthHeader } from "../../pages/MainPage.jsx";
 import routes from "../../routes.js";
 import { setEditModalActive } from '../../slices/modalSlice.js';
+import { setCurrentChannel } from '../../slices/channelsSlice.js';
 
 const EditModalWindow = () => {
     const [authFailed, setAuthFailed] = useState(false);
@@ -26,6 +27,12 @@ const EditModalWindow = () => {
             inputRef.current.focus();
         }
     }, [isActive]);
+//надо ли оно тут
+     useEffect(() => {
+            if (currentChannels && isActive){
+                dispatch(setCurrentChannel(currentChannels[currentChannels.length - 1]))
+            }
+        }, [currentChannels]);
 
     const channelScheme = Yup.object().shape({
         channelName: Yup.string()
@@ -68,6 +75,7 @@ const EditModalWindow = () => {
                                         });
                                         setSubmitting(false);
                                         dispatch(setEditModalActive(false));
+                                        //dispatch(setCurrentChannel(newChannel))
                                     } catch(err) {
                                         if (err.isAxiosError ) {
                                             toast.error(t("errors.serverLoadDataError"))

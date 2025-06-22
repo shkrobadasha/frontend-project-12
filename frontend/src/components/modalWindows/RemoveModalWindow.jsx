@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect} from 'react';
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import _ from 'lodash';
@@ -8,6 +8,7 @@ import { Button } from 'react-bootstrap';
 import { getAuthHeader } from "../../pages/MainPage.jsx";
 import routes from "../../routes.js";
 import { setRemoveModalActive } from '../../slices/modalSlice.js';
+import { setCurrentChannel } from '../../slices/channelsSlice.js';
 
 const RemoveModalWindow = () => {
     const [authFailed, setAuthFailed] = useState(false);    
@@ -15,6 +16,14 @@ const RemoveModalWindow = () => {
     const dispatch = useDispatch();
     const isActive = useSelector(state => state.modal.isRemoveModalActive);
     const idForRemove = useSelector(state => state.modal.idForRemove);
+    const currentChannels = useSelector(state => state.channels.channels);
+    const defaultChannel = { id: '1', name: 'general', removable: false }
+    
+    useEffect(() => {
+        if (currentChannels && isActive){
+            dispatch(setCurrentChannel(defaultChannel))
+        }
+    }, [currentChannels]);
 
     const deleteHandler = async () => {
         setAuthFailed(false);

@@ -21,7 +21,6 @@ const channelsSlice = createSlice({
             const newChannels = curChannels.filter((channel) => channel.id !== id);
             state.channels = newChannels
         },
-        //тут ошибка при обращении 
         renameChannel(state, {payload}) {
             state.channels = state.channels.map(channel => 
                 channel.id === payload.id ? payload : channel
