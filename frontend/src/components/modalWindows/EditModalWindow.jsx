@@ -13,6 +13,7 @@ import { setEditModalActive } from '../../slices/modalSlice.js';
 import { setCurrentChannel } from '../../slices/channelsSlice.js';
 
 const EditModalWindow = () => {
+    // eslint-disable-next-line no-unused-vars
     const [authFailed, setAuthFailed] = useState(false);
     const dispatch = useDispatch();
     const {t} = useTranslation();
@@ -32,6 +33,7 @@ const EditModalWindow = () => {
             if (currentChannels && isActive){
                 dispatch(setCurrentChannel(currentChannels[currentChannels.length - 1]))
             }
+            // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [currentChannels]);
 
     const channelScheme = Yup.object().shape({

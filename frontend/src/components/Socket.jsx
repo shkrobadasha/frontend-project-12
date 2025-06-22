@@ -1,7 +1,7 @@
 import { io } from 'socket.io-client';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
-import { setChannel, deleteChannel, renameChannel, setCurrentChannel} from '../slices/channelsSlice.js';
+import { setChannel, deleteChannel, renameChannel} from '../slices/channelsSlice.js';
 import { setMessage } from '../slices/messagesSlice.js';
 
 

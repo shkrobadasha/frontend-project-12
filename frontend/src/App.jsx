@@ -1,6 +1,5 @@
 import React from 'react';
 import { Provider, ErrorBoundary } from '@rollbar/react';
-import { useSelector } from 'react-redux';
 import {
   BrowserRouter,
   Routes,

@@ -11,6 +11,7 @@ import { setRemoveModalActive } from '../../slices/modalSlice.js';
 import { setCurrentChannel } from '../../slices/channelsSlice.js';
 
 const RemoveModalWindow = () => {
+    // eslint-disable-next-line no-unused-vars
     const [authFailed, setAuthFailed] = useState(false);    
     const {t} = useTranslation();
     const dispatch = useDispatch();
@@ -23,6 +24,7 @@ const RemoveModalWindow = () => {
         if (currentChannels && isActive){
             dispatch(setCurrentChannel(defaultChannel))
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentChannels]);
 
     const deleteHandler = async () => {

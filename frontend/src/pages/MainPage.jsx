@@ -14,6 +14,7 @@ import ChannelsSidebar from '../components/channels/ChannelsSidebar.jsx';
 import ChatContent from '../components/messages/ChatContent.jsx';
 import Navbar from '../components/Navbar.jsx';
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const getAuthHeader = () => {
   const userId = JSON.parse(localStorage.getItem('userId'));
   if (userId && userId.token) {
@@ -46,6 +47,7 @@ const MainPage = () => {
       }
     };
     fetchContent();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
   return (

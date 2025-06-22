@@ -7,7 +7,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { Button, Form as BootstrapForm } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { logIn, logOut } from '../slices/authSlice.js';
+import { logIn} from '../slices/authSlice.js';
 import routes from '../routes.js';
 
 

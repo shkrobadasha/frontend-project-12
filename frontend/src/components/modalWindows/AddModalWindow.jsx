@@ -17,6 +17,7 @@ const AddModalWindow = () => {
     const dispatch = useDispatch();
     const {t} = useTranslation();
     const isActive = useSelector(state => state.modal.isAddModalActive);
+    // eslint-disable-next-line no-unused-vars
     const [authFailed, setAuthFailed] = useState(false);
     const currentChannels = useSelector(state => state.channels.channels);
     const channelNames = currentChannels.map(channel => channel.name);
@@ -33,6 +34,7 @@ const AddModalWindow = () => {
         if (currentChannels && isActive){
             dispatch(setCurrentChannel(currentChannels[currentChannels.length - 1]))
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentChannels]);
 
     const channelScheme = Yup.object().shape({
