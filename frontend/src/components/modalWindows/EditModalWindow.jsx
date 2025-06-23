@@ -16,10 +16,10 @@ const EditModalWindow = () => {
   const [authFailed, setAuthFailed] = useState(false)
   const dispatch = useDispatch()
   const { t } = useTranslation()
-  const isActive = useSelector((state) => state.modal.isEditModalActive)
-  const channelForEdit = useSelector((state) => state.modal.channelForEdit)
-  const currentChannels = useSelector((state) => state.channels.channels)
-  const channelNames = currentChannels.map((channel) => channel.name)
+  const isActive = useSelector(state => state.modal.isEditModalActive)
+  const channelForEdit = useSelector(state => state.modal.channelForEdit)
+  const currentChannels = useSelector(state => state.channels.channels)
+  const channelNames = currentChannels.map(channel => channel.name)
   const inputRef = useRef(null)
 
   useEffect(() => {
@@ -28,12 +28,10 @@ const EditModalWindow = () => {
     }
   }, [isActive])
 
-  // надо ли оно тут
   useEffect(() => {
     if (currentChannels && isActive) {
       dispatch(setCurrentChannel(currentChannels[currentChannels.length - 1]))
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentChannels])
 
   const channelScheme = Yup.object().shape({
@@ -80,10 +78,12 @@ const EditModalWindow = () => {
                     })
                     setSubmitting(false)
                     dispatch(setEditModalActive(false))
-                  } catch (err) {
+                  } catch (err) 
+                  {
                     if (err.isAxiosError) {
                       toast.error(t('errors.serverLoadDataError'))
-                    } else {
+                    } else 
+                    {
                       toast.error(t('errors.networkError'))
                     }
                     setSubmitting(false)

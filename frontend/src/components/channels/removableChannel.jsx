@@ -32,7 +32,7 @@ const RemovableChannel = ({ channelData }) => {
       <Button
         variant={currentChannel.id === channelData.id ? 'secondary' : 'light'}
         className={cn('w-100', 'rounded-0', 'text-start', 'btn', {
-          'btn-secondary': currentChannel.id === channelData.id
+          'btn-secondary': currentChannel.id === channelData.id,
         })}
       >
         <span className="me-1">#</span>
@@ -53,7 +53,7 @@ const RemovableChannel = ({ channelData }) => {
         style={{
           position: 'absolute',
           inset: '0px auto auto 0px',
-          transform: 'translate(0px, 40px)'
+          transform: 'translate(0px, 40px)',
         }}
       >
         <Dropdown.Item href="#" className="dropdown-item" onClick={() => handleDeleteChannelClick(channelData.id)}>

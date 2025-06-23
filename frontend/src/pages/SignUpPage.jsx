@@ -1,17 +1,17 @@
-import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
-import * as Yup from 'yup';
-import { Formik, Form, Field } from 'formik';
-import { useState, useEffect, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-import { Button, Form as BootstrapForm } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
-import { logIn } from '../slices/authSlice.js';
-import routes from '../routes';
+import axios from 'axios'
+import { ToastContainer, toast } from 'react-toastify'
+import * as Yup from 'yup'
+import { Formik, Form, Field } from 'formik'
+import { useState, useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
+import { Button, Form as BootstrapForm } from 'react-bootstrap'
+import { useDispatch } from 'react-redux'
+import { logIn } from '../slices/authSlice.js'
+import routes from '../routes'
 
 const SignUpPage = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
   const SignupSchema = Yup.object().shape({
     username: Yup.string()
@@ -23,16 +23,16 @@ const SignUpPage = () => {
       .required(t('errors.requiredField')),
     confirmPassword: Yup.string()
       .oneOf([Yup.ref('password')], t('errors.confirmPasswordError')),
-  });
+  })
 
-  const [authFailed, setAuthFailed] = useState(false);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const inputRef = useRef(null);
+  const [authFailed, setAuthFailed] = useState(false)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const inputRef = useRef(null)
 
   useEffect(() => {
-    inputRef.current.focus();
-  }, []);
+    inputRef.current.focus()
+  }, [])
 
   return (
     <div className="h-100">
@@ -57,29 +57,31 @@ const SignUpPage = () => {
                       }}
                       validationSchema={SignupSchema}
                       onSubmit={async (values, { setSubmitting, setErrors }) => {
-                        const { username, password } = values;
-                        setAuthFailed(false);
+                        const { username, password } = values
+                        setAuthFailed(false)
                         try {
                           const res = await axios.post(routes.signUpPath(), { username, password });
-                          localStorage.setItem('userId', JSON.stringify(res.data));
-                          localStorage.setItem('user', values.username);
-                          dispatch(logIn());
-                          navigate('/');
-                        } catch (err) {
-                          setSubmitting(false);
-                          if (err.isAxiosError) {
+                          localStorage.setItem('userId', JSON.stringify(res.data))
+                          localStorage.setItem('user', values.username)
+                          dispatch(logIn())
+                          navigate('/')
+                        } 
+                        catch (err) {
+                          setSubmitting(false)
+                          if (err.isAxiosError) 
+                            {
                             if (err.response?.status === 409) {
                               setErrors({
                                 confirmPassword: t('errors.alreadyExistsUserError'),
-                              });
-                              return;
+                              })
+                              return
                             }
-                            toast.error(t('errors.serverLoadDataError'));
-                            return;
+                            toast.error(t('errors.serverLoadDataError'))
+                            return
                           }
-                          toast.error(t('errors.networkError'));
-                          setAuthFailed(true);
-                          inputRef.current.select();
+                          toast.error(t('errors.networkError'))
+                          setAuthFailed(true)
+                          inputRef.current.select()
                         }
                       }}
                     >
@@ -137,7 +139,7 @@ const SignUpPage = () => {
       </div>
       <ToastContainer />
     </div>
-  );
-};
+  )
+}
 
-export default SignUpPage;
+export default SignUpPage

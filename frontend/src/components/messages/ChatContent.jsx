@@ -5,11 +5,11 @@ import MessageForm from './MessageForm'
 
 const ChatContent = () => {
   const { t } = useTranslation()
-  const currentMessages = useSelector((state) => state.messages.messages)
-  const currentChannel = useSelector((state) => state.channels.currentChannel)
+  const currentMessages = useSelector(state => state.messages.messages)
+  const currentChannel = useSelector(state => state.channels.currentChannel)
 
   const getMessagesOfCurrentChannel = (messages) => {
-    const currentMessages = messages.filter((message) => message.channelId === currentChannel.id)
+    const currentMessages = messages.filter(message => message.channelId === currentChannel.id)
     return currentMessages
   }
 
@@ -21,10 +21,10 @@ const ChatContent = () => {
 
     return (
       <div id="messages-box" className="chat-messages overflow-auto px-5">
-        {curMessages.map((message) => (
+        {curMessages.map(message => (
           <div className="text-break mb-2" key={message.id}>
             <b>{message.username}</b>
-            : 
+            :
             {Profanity.check(message.body) ? Profanity.clean(message.body) : message.body}
           </div>
         ))}
@@ -38,7 +38,7 @@ const ChatContent = () => {
         <div className="bg-light mb-4 p-3 shadow-sm small">
           <p className="m-0">
             <b>
-              # 
+              #
               {currentChannel.name}
             </b>
           </p>

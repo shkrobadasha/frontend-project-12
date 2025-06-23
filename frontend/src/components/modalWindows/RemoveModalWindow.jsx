@@ -14,16 +14,15 @@ const RemoveModalWindow = () => {
   const [authFailed, setAuthFailed] = useState(false)
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const isActive = useSelector((state) => state.modal.isRemoveModalActive)
-  const idForRemove = useSelector((state) => state.modal.idForRemove)
-  const currentChannels = useSelector((state) => state.channels.channels)
+  const isActive = useSelector(state => state.modal.isRemoveModalActive)
+  const idForRemove = useSelector(state => state.modal.idForRemove)
+  const currentChannels = useSelector(state => state.channels.channels)
   const defaultChannel = { id: '1', name: 'general', removable: false }
 
   useEffect(() => {
     if (currentChannels && isActive) {
       dispatch(setCurrentChannel(defaultChannel))
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentChannels])
 
   const deleteHandler = async () => {
@@ -31,10 +30,12 @@ const RemoveModalWindow = () => {
     try {
       await axios.delete(routes.channelPath(idForRemove), { headers: getAuthHeader() })
       dispatch(setRemoveModalActive(false))
-    } catch (err) {
+    } catch (err) 
+    {
       if (err.isAxiosError) {
         toast.error(t('errors.serverLoadDataError'))
-      } else {
+      } else 
+      {
         toast.error(t('errors.networkError'))
       }
       setAuthFailed(true)

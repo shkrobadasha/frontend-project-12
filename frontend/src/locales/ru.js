@@ -57,4 +57,4 @@ export default {
       serverLoadDataError: 'Ошибка загрузки данных',
     },
   },
-};
+}

@@ -9,8 +9,8 @@ import routes from '../../routes'
 
 const MessageForm = () => {
   const dispatch = useDispatch()
-  const currentText = useSelector((state) => state.messages.currentText)
-  const currentChannel = useSelector((state) => state.channels.currentChannel)
+  const currentText = useSelector(state => state.messages.currentText)
+  const currentChannel = useSelector(state => state.channels.currentChannel)
   const { t } = useTranslation()
 
   const handleSendMessage = async (e) => {
@@ -19,7 +19,7 @@ const MessageForm = () => {
     try {
       await axios.post(
         routes.messagesPath(),
-        { 
+        {
           id: _.uniqueId(),
           body: currentText,
           channelId: currentChannel.id,
@@ -28,7 +28,8 @@ const MessageForm = () => {
         { headers: getAuthHeader() },
       )
       dispatch(setCurrentText(''))
-    } catch (err) {
+    } catch (err) 
+    {
       if (err.isAxiosError) {
         toast.err(t('errors.serverLoadDataError'))
       }

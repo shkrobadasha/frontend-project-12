@@ -13,7 +13,7 @@ export default [
       '@stylistic': stylistic,
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
-      'react': reactPlugin
+      'react': reactPlugin,
     },
     languageOptions: {
       ecmaVersion: 2020,
@@ -21,13 +21,13 @@ export default [
       parserOptions: {
         ecmaVersion: 'latest',
         ecmaFeatures: { jsx: true },
-        sourceType: 'module'
-      }
+        sourceType: 'module',
+      },
     },
     settings: {
       react: {
-        version: 'detect'
-      }
+        version: 'detect',
+      },
     },
     rules: {
       ...js.configs.recommended.rules,
@@ -51,16 +51,15 @@ export default [
         closingSlash: 'never',
         beforeSelfClosing: 'always',
         afterOpening: 'never',
-        beforeClosing: 'never'
+        beforeClosing: 'never',
       }],
       '@stylistic/jsx-curly-spacing': ['error', { when: 'never' }],
       '@stylistic/jsx-wrap-multilines': 'error',
       '@stylistic/jsx-closing-bracket-location': 'error',
-      
       // React-специфичные правила
       'react/jsx-uses-react': 'error',
       'react/jsx-uses-vars': 'error',
-      'react/no-unknown-property': ['error', { ignore: ['css'] }]
-    }
-  }
+      'react/no-unknown-property': ['error', { ignore: ['css'] }],
+    },
+  },
 ]
