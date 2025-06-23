@@ -31,7 +31,7 @@ export default {
       editField: 'Переименовать',
       removeField: 'Удалить',
     },
-    modalWindow:{
+    modalWindow: {
       windowsButtons: {
         sendButton: 'Отправить',
         cancelButton: 'Отменить',
@@ -43,21 +43,18 @@ export default {
         removeTitle: 'Удалить канал',
         clarifyingRemoveTitle: 'Уверены?',
         channelName: 'Имя канала',
-
       },
     },
-    errors:{
+    errors: {
       requiredField: 'Обязательное поле',
       loginError: 'Неверные имя пользователя или пароль',
       nameLengthError: 'От 3 до 20 символов',
       passwordLengthError: 'Не менее 6 символов',
       confirmPasswordError: 'Пароли должны совпадать',
       alreadyExistsUserError: 'Такой пользователь уже существует',
-      alreadyExistsChannelError:'Должно быть уникальным',
+      alreadyExistsChannelError: 'Должно быть уникальным',
       networkError: 'Ошибка соединения',
       serverLoadDataError: 'Ошибка загрузки данных',
-
     },
-
   },
-}
+};

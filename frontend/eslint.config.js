@@ -13,7 +13,7 @@ export default [
       '@stylistic': stylistic,
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
-      'react': reactPlugin,
+      'react': reactPlugin
     },
     languageOptions: {
       ecmaVersion: 2020,
@@ -21,13 +21,13 @@ export default [
       parserOptions: {
         ecmaVersion: 'latest',
         ecmaFeatures: { jsx: true },
-        sourceType: 'module',
-      },
+        sourceType: 'module'
+      }
     },
     settings: {
       react: {
-        version: 'detect', // Автоматически определяет версию React из package.json
-      },
+        version: 'detect'
+      }
     },
     rules: {
       ...js.configs.recommended.rules,
@@ -46,8 +46,7 @@ export default [
       '@stylistic/no-multiple-empty-lines': ['error', { max: 1 }],
 
       // Специфичные правила для JSX
-      
-      "@stylistic/jsx-equals-spacing": ["error", "never"],
+      '@stylistic/jsx-equals-spacing': ['error', 'never'],
       '@stylistic/jsx-tag-spacing': ['error', {
         closingSlash: 'never',
         beforeSelfClosing: 'always',
@@ -62,6 +61,6 @@ export default [
       'react/jsx-uses-react': 'error',
       'react/jsx-uses-vars': 'error',
       'react/no-unknown-property': ['error', { ignore: ['css'] }]
-    },
-  },
+    }
+  }
 ]

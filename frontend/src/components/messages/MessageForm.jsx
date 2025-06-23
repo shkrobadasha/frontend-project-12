@@ -9,8 +9,8 @@ import routes from '../../routes'
 
 const MessageForm = () => {
   const dispatch = useDispatch()
-  const currentText = useSelector(state => state.messages.currentText)
-  const currentChannel = useSelector(state => state.channels.currentChannel)
+  const currentText = useSelector((state) => state.messages.currentText)
+  const currentChannel = useSelector((state) => state.channels.currentChannel)
   const { t } = useTranslation()
 
   const handleSendMessage = async (e) => {
@@ -21,8 +21,8 @@ const MessageForm = () => {
         routes.messagesPath(),
         { 
           id: _.uniqueId(),
-          body: currentText, 
-          channelId: currentChannel.id, 
+          body: currentText,
+          channelId: currentChannel.id,
           username: `${localStorage.getItem('user')}`,
         },
         { headers: getAuthHeader() },
@@ -32,34 +32,34 @@ const MessageForm = () => {
       if (err.isAxiosError) {
         toast.err(t('errors.serverLoadDataError'))
       }
-      toast.err(t('errors.networkError'))                                               
+      toast.err(t('errors.networkError'))
     }
   }
 
   const handleInputChange = (e) => {
     dispatch(setCurrentText(e.target.value))
   }
+
   return (
     <div className="mt-auto px-5 py-3">
       <form noValidate className="py-1 border rounded-2" onSubmit={handleSendMessage}>
-        <div className="input-group has-validation"> 
-          <input 
-            name="body" 
+        <div className="input-group has-validation">
+          <input
+            name="body"
             aria-label="Новое сообщение"
             placeholder={t('mainPage.messagesDefaultText')}
             className="border-0 p-0 ps-2 form-control"
-            value={currentText} 
+            value={currentText}
             onChange={handleInputChange}
           />
-          <button type="submit" className="btn btn-primary"> 
+          <button type="submit" className="btn btn-primary">
             {t('modalWindow.windowsButtons.sendButton')}
           </button>
         </div>
       </form>
-      <ToastContainer/>
+      <ToastContainer />
     </div>
   )
-
 }
 
 export default MessageForm

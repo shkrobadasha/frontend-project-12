@@ -1,32 +1,29 @@
-import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-import { useTranslation } from 'react-i18next'
-import axios from 'axios'
-import _ from 'lodash'
-import { ToastContainer, toast } from 'react-toastify'
-import routes from '../routes.js'
-import { setChannels } from '../slices/channelsSlice.js'
-import { setMessages } from '../slices/messagesSlice.js'
-import AddModalWindow from '../components/modalWindows/AddModalWindow.jsx'
-import RemoveModalWindow from '../components/modalWindows/RemoveModalWindow.jsx'
-import EditModalWindow from '../components/modalWindows/EditModalWindow.jsx'
-import ChannelsSidebar from '../components/channels/ChannelsSidebar.jsx'
-import ChatContent from '../components/messages/ChatContent.jsx'
-import Navbar from '../components/Navbar.jsx'
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import routes from '../routes.js';
+import { setChannels } from '../slices/channelsSlice.js';
+import { setMessages } from '../slices/messagesSlice.js';
+import AddModalWindow from '../components/modalWindows/AddModalWindow.jsx';
+import RemoveModalWindow from '../components/modalWindows/RemoveModalWindow.jsx';
+import EditModalWindow from '../components/modalWindows/EditModalWindow.jsx';
+import ChannelsSidebar from '../components/channels/ChannelsSidebar.jsx';
+import ChatContent from '../components/messages/ChatContent.jsx';
+import Navbar from '../components/Navbar.jsx';
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const getAuthHeader = () => {
-  const userId = JSON.parse(localStorage.getItem('userId'))
+  const userId = JSON.parse(localStorage.getItem('userId'));
   if (userId && userId.token) {
-    return { Authorization: `Bearer ${userId.token}` }
+    return { Authorization: `Bearer ${userId.token}` };
   }
-  return {}
-}
+  return {};
+};
 
 const MainPage = () => {
-
-  const dispatch = useDispatch()
-  const { t } = useTranslation()
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -34,30 +31,28 @@ const MainPage = () => {
         const [channelsRes, mes] = await Promise.all([
           axios.get(routes.channelsPath(), { headers: getAuthHeader() }),
           axios.get(routes.messagesPath(), { headers: getAuthHeader() }),
-        ])
-        dispatch(setChannels(channelsRes.data))
-        dispatch(setMessages(mes.data))
+        ]);
+        dispatch(setChannels(channelsRes.data));
+        dispatch(setMessages(mes.data));
       } catch (error) {
-
-        if (error.isAxiosError ) {
-          toast.error(t('errors.serverLoadDataError'))
+        if (error.isAxiosError) {
+          toast.error(t('errors.serverLoadDataError'));
         } else {
-          toast.error(t('errors.networkError'))
+          toast.error(t('errors.networkError'));
         }
       }
-    }
-    fetchContent()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch])
+    };
+    fetchContent();
+  }, [dispatch, t]);
 
   return (
-    <div className="vh-100"> 
+    <div className="vh-100">
       <div className="h-100">
-        <div className="h-100" id="chat"> 
+        <div className="h-100" id="chat">
           <div className="vh-100 d-flex flex-column h-100">
             <Navbar />
             <div className="flex-grow-1 container h-100 my-4 overflow-hidden rounded shadow">
-              <div className="row h-100 bg-white flex-md-row"> 
+              <div className="row h-100 bg-white flex-md-row">
                 <ChannelsSidebar />
                 <ChatContent />
               </div>
@@ -69,8 +64,8 @@ const MainPage = () => {
       <AddModalWindow />
       <RemoveModalWindow />
       <EditModalWindow />
-    </div> 
-  )
-}
+    </div>
+  );
+};
 
-export default MainPage
+export default MainPage;

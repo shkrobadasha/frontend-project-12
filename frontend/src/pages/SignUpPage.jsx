@@ -1,17 +1,17 @@
-import axios from 'axios'
-import { ToastContainer, toast } from 'react-toastify'
-import * as Yup from 'yup'
-import { Formik, Form, Field } from 'formik'
-import React, { useState, useEffect, useRef } from 'react'
-import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
-import { Button, Form as BootstrapForm } from 'react-bootstrap'
-import { useDispatch } from 'react-redux'
-import { logIn } from '../slices/authSlice.js'
-import routes from '../routes'
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import * as Yup from 'yup';
+import { Formik, Form, Field } from 'formik';
+import { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { Button, Form as BootstrapForm } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
+import { logIn } from '../slices/authSlice.js';
+import routes from '../routes';
 
 const SignUpPage = () => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   const SignupSchema = Yup.object().shape({
     username: Yup.string()
@@ -23,20 +23,20 @@ const SignUpPage = () => {
       .required(t('errors.requiredField')),
     confirmPassword: Yup.string()
       .oneOf([Yup.ref('password')], t('errors.confirmPasswordError')),
-  })
+  });
 
-  const [authFailed, setAuthFailed] = useState(false)
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const inputRef = useRef(null)
-    
+  const [authFailed, setAuthFailed] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const inputRef = useRef(null);
+
   useEffect(() => {
-    inputRef.current.focus()
-  }, [])
+    inputRef.current.focus();
+  }, []);
 
   return (
     <div className="h-100">
-      <div className="h-100" id="chat"> 
+      <div className="h-100" id="chat">
         <div className="d-flex flex-column h-100">
           <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
             <div className="container">
@@ -57,34 +57,31 @@ const SignUpPage = () => {
                       }}
                       validationSchema={SignupSchema}
                       onSubmit={async (values, { setSubmitting, setErrors }) => {
-                        const { username, password } = values
-                        setAuthFailed(false)
+                        const { username, password } = values;
+                        setAuthFailed(false);
                         try {
-                          const res = await axios.post(routes.signUpPath(), { username, password })
-                          localStorage.setItem('userId', JSON.stringify(res.data))
-                          localStorage.setItem('user', values.username)
-                          dispatch(logIn())
-                          navigate('/')
+                          const res = await axios.post(routes.signUpPath(), { username, password });
+                          localStorage.setItem('userId', JSON.stringify(res.data));
+                          localStorage.setItem('user', values.username);
+                          dispatch(logIn());
+                          navigate('/');
                         } catch (err) {
-                          setSubmitting(false)
+                          setSubmitting(false);
                           if (err.isAxiosError) {
                             if (err.response?.status === 409) {
                               setErrors({
                                 confirmPassword: t('errors.alreadyExistsUserError'),
-                              })
-                              return
-                            } else {
-                              toast.error(t('errors.serverLoadDataError'))
-                              return
-                            }  
+                              });
+                              return;
+                            }
+                            toast.error(t('errors.serverLoadDataError'));
+                            return;
                           }
-                          toast.error(t('errors.networkError'))
-                          setAuthFailed(true)
-                          inputRef.current.select()
-                          return
+                          toast.error(t('errors.networkError'));
+                          setAuthFailed(true);
+                          inputRef.current.select();
                         }
                       }}
-                                        
                     >
                       {({ errors, touched }) => (
                         <Form>
@@ -94,12 +91,12 @@ const SignUpPage = () => {
                               as={BootstrapForm.Control}
                               type="text"
                               name="username"
-                              isInvalid={touched.username && errors.username || authFailed} 
+                              isInvalid={(touched.username && errors.username) || authFailed}
                               ref={inputRef}
                             />
-                            {errors.username && touched.username ? (
+                            {errors.username && touched.username && (
                               <div className="invalid-feedback">{errors.username}</div>
-                            ): null}
+                            )}
                           </BootstrapForm.Group>
                           <BootstrapForm.Group className="mb-3" controlId="password">
                             <BootstrapForm.Label>{t('password')}</BootstrapForm.Label>
@@ -107,11 +104,11 @@ const SignUpPage = () => {
                               as={BootstrapForm.Control}
                               type="password"
                               name="password"
-                              isInvalid={touched.password && errors.password || authFailed}
+                              isInvalid={(touched.password && errors.password) || authFailed}
                             />
-                            {errors.password && touched.password ? (
+                            {errors.password && touched.password && (
                               <div className="invalid-feedback">{errors.password}</div>
-                            ): null}
+                            )}
                           </BootstrapForm.Group>
                           <BootstrapForm.Group className="mb-3" controlId="confirmPassword">
                             <BootstrapForm.Label>{t('signUpPage.confirmPassword')}</BootstrapForm.Label>
@@ -119,16 +116,17 @@ const SignUpPage = () => {
                               as={BootstrapForm.Control}
                               type="password"
                               name="confirmPassword"
-                              isInvalid={touched.confirmPassword && errors.confirmPassword || authFailed}
+                              isInvalid={(touched.confirmPassword && errors.confirmPassword) || authFailed}
                             />
-                            {errors.confirmPassword && touched.confirmPassword ? (
+                            {errors.confirmPassword && touched.confirmPassword && (
                               <div className="invalid-feedback">{errors.confirmPassword}</div>
-                            ): null}
+                            )}
                           </BootstrapForm.Group>
-                          <Button type='submit' variant="outline-primary" className="w-100 mb-3 btn btn-outline-primary">{t('signUpPage.signUpButton')}</Button>
+                          <Button type="submit" variant="outline-primary" className="w-100 mb-3">
+                            {t('signUpPage.signUpButton')}
+                          </Button>
                         </Form>
                       )}
-
                     </Formik>
                   </div>
                 </div>
@@ -139,7 +137,7 @@ const SignUpPage = () => {
       </div>
       <ToastContainer />
     </div>
-  )
-}
+  );
+};
 
-export default SignUpPage
+export default SignUpPage;

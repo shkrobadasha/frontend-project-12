@@ -26,13 +26,26 @@ const App = () => {
       <ErrorBoundary>
         <BrowserRouter>
           <Routes>
-            <Route path="*" element={<NotFoundPage/>} />
-            <Route path="/login" element={<LoginPage/>} />
-            <Route path="/signup" element={<SignUpPage/>} />
-            <Route path="/"
-              element={(<PrivateRoute>
-                <MainPage />
-              </PrivateRoute>)} />
+            <Route
+              path="*"
+              element={<NotFoundPage />}
+            />
+            <Route
+              path="/login"
+              element={<LoginPage />}
+            />
+            <Route
+              path="/signup"
+              element={<SignUpPage />}
+            />
+            <Route
+              path="/"
+              element={(
+                <PrivateRoute>
+                  <MainPage />
+                </PrivateRoute>
+              )}
+            />
           </Routes>
         </BrowserRouter>
       </ErrorBoundary>
