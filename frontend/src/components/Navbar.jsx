@@ -1,24 +1,24 @@
 
-import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 const Navbar = () => {
-    const { t } = useTranslation();
-    const navigate = useNavigate();
+  const { t } = useTranslation()
+  const navigate = useNavigate()
 
-    const handleLeave = () => {
-        navigate('/login');
-        localStorage.removeItem('userId');
-    };
+  const handleLeave = () => {
+    navigate('/login')
+    localStorage.removeItem('userId')
+  }
 
-    return (
-        <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white" >
-            <div class="container">
-                <a class="navbar-brand" href="/">{t("navbarTitle")}</a>
-                <button type='button' class="btn btn-primary" onClick={handleLeave}>{t("exitButton")}</button>
-            </div>
-        </nav>
-    )
-};
+  return (
+    <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white" >
+      <div class="container">
+        <a class="navbar-brand" href="/">{t('navbarTitle')}</a>
+        <button type='button' class="btn btn-primary" onClick={handleLeave}>{t('exitButton')}</button>
+      </div>
+    </nav>
+  )
+}
 
-export default Navbar;
+export default Navbar

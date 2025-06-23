@@ -1,6 +1,6 @@
-import ru from "./ru";
+import ru from './ru'
 export default {
   ru: {
     translation: ru.translation,
   },
-};
+}

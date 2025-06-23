@@ -4,7 +4,7 @@ import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import App from './App.jsx'
 import store from './slices/index.js'
-import './styles.css';
+import './styles.css'
 // eslint-disable-next-line no-unused-vars
 import i18next from './18n.js'
 import Socket from './components/Socket.jsx'

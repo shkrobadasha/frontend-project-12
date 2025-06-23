@@ -5,11 +5,11 @@ import channelsReducer from './channelsSlice.js'
 import modalReducer from './modalSlice.js'
 
 export default configureStore({
-    reducer: {
-        auth: authReducer,
-        channels: channelsReducer,
-        messages: messagesReducer,
-        modal: modalReducer,
-    }
-});
+  reducer: {
+    auth: authReducer,
+    channels: channelsReducer,
+    messages: messagesReducer,
+    modal: modalReducer,
+  },
+})
 
