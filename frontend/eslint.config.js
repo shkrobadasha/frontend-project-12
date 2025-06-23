@@ -3,6 +3,7 @@ import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import stylistic from '@stylistic/eslint-plugin'
+import reactPlugin from 'eslint-plugin-react'
 
 export default [
   { ignores: ['dist'] },
@@ -12,6 +13,7 @@ export default [
       '@stylistic': stylistic,
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
+      'react': reactPlugin,
     },
     languageOptions: {
       ecmaVersion: 2020,
@@ -22,13 +24,18 @@ export default [
         sourceType: 'module',
       },
     },
+    settings: {
+      react: {
+        version: 'detect', // Автоматически определяет версию React из package.json
+      },
+    },
     rules: {
       ...js.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
 
-      // Стилевые правила
+      // Основные стилевые правила
       '@stylistic/indent': ['error', 2],
       '@stylistic/semi': ['error', 'never'],
       '@stylistic/quotes': ['error', 'single'],
@@ -37,6 +44,24 @@ export default [
       '@stylistic/space-before-blocks': 'error',
       '@stylistic/eol-last': ['error', 'always'],
       '@stylistic/no-multiple-empty-lines': ['error', { max: 1 }],
+
+      // Специфичные правила для JSX
+      
+      "@stylistic/jsx-equals-spacing": ["error", "never"],
+      '@stylistic/jsx-tag-spacing': ['error', {
+        closingSlash: 'never',
+        beforeSelfClosing: 'always',
+        afterOpening: 'never',
+        beforeClosing: 'never'
+      }],
+      '@stylistic/jsx-curly-spacing': ['error', { when: 'never' }],
+      '@stylistic/jsx-wrap-multilines': 'error',
+      '@stylistic/jsx-closing-bracket-location': 'error',
+      
+      // React-специфичные правила
+      'react/jsx-uses-react': 'error',
+      'react/jsx-uses-vars': 'error',
+      'react/no-unknown-property': ['error', { ignore: ['css'] }]
     },
   },
 ]

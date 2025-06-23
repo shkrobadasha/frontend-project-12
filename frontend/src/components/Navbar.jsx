@@ -12,10 +12,10 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white" >
-      <div class="container">
-        <a class="navbar-brand" href="/">{t('navbarTitle')}</a>
-        <button type='button' class="btn btn-primary" onClick={handleLeave}>{t('exitButton')}</button>
+    <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
+      <div className="container">
+        <a className="navbar-brand" href="/">{t('navbarTitle')}</a>
+        <button type='button' className="btn btn-primary" onClick={handleLeave}>{t('exitButton')}</button>
       </div>
     </nav>
   )

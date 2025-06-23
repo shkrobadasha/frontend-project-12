@@ -55,11 +55,11 @@ const MainPage = () => {
       <div className="h-100">
         <div className="h-100" id="chat"> 
           <div className="vh-100 d-flex flex-column h-100">
-            <Navbar/>
+            <Navbar />
             <div className="flex-grow-1 container h-100 my-4 overflow-hidden rounded shadow">
               <div className="row h-100 bg-white flex-md-row"> 
-                <ChannelsSidebar/>
-                <ChatContent/>
+                <ChannelsSidebar />
+                <ChatContent />
               </div>
             </div>
           </div>
