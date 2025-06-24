@@ -44,6 +44,36 @@ const EditModalWindow = () => {
       .required(t('errors.requiredField')),
   })
 
+  const sendEditChannelRequest = async (values, { setSubmitting }) => {
+    setAuthFailed(false)
+    try {
+      const newChannelName = {
+        name: values.channelName,
+      }
+      await axios.patch(routes.channelPath(channelForEdit.id), newChannelName, {
+        headers: getAuthHeader(),
+      })
+      setSubmitting(false)
+      dispatch(setEditModalActive(false))
+    }
+    catch (err) {
+      if (err.isAxiosError) {
+        if (err.response?.status === 401) {
+          toast.error(t('errors.userLoginError'))
+          navigate('/login', { state: { from: '/main' } })
+          return
+        }
+        toast.error(t('errors.serverLoadDataError'))
+        return
+      }
+      else {
+        toast.error(t('errors.networkError'))
+      }
+      setSubmitting(false)
+      setAuthFailed(true)
+    }
+  }
+
   if (!isActive) {
     return null
   }
@@ -69,35 +99,7 @@ const EditModalWindow = () => {
               <Formik
                 initialValues={{ channelName: channelForEdit.name }}
                 validationSchema={channelScheme}
-                onSubmit={async (values, { setSubmitting }) => {
-                  setAuthFailed(false)
-                  try {
-                    const newChannelName = {
-                      name: values.channelName,
-                    }
-                    await axios.patch(routes.channelPath(channelForEdit.id), newChannelName, {
-                      headers: getAuthHeader(),
-                    })
-                    setSubmitting(false)
-                    dispatch(setEditModalActive(false))
-                  }
-                  catch (err) {
-                    if (err.isAxiosError) {
-                      if (err.response?.status === 401) {
-                        toast.error(t('errors.userLoginError'))
-                        navigate('/login', { state: { from: '/main' } })
-                        return
-                      }
-                      toast.error(t('errors.serverLoadDataError'))
-                      return
-                    }
-                    else {
-                      toast.error(t('errors.networkError'))
-                    }
-                    setSubmitting(false)
-                    setAuthFailed(true)
-                  }
-                }}
+                onSubmit={(values, { setSubmitting }) => sendEditChannelRequest(values, { setSubmitting })}
               >
                 {({ errors, touched, isSubmitting }) => (
                   <Form>

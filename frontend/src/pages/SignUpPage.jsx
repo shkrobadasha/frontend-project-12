@@ -34,6 +34,34 @@ const SignUpPage = () => {
     inputRef.current.focus()
   }, [])
 
+  const sendSignUpRequest = async (values, { setSubmitting, setErrors }) => {
+    const { username, password } = values
+    setAuthFailed(false)
+    try {
+      const res = await axios.post(routes.signUpPath(), { username, password })
+      localStorage.setItem('userId', JSON.stringify(res.data))
+      localStorage.setItem('user', values.username)
+      dispatch(logIn())
+      navigate('/')
+    }
+    catch (err) {
+      setSubmitting(false)
+      if (err.isAxiosError) {
+        if (err.response?.status === 409) {
+          setErrors({
+            confirmPassword: t('errors.alreadyExistsUserError'),
+          })
+          return
+        }
+        toast.error(t('errors.serverLoadDataError'))
+        return
+      }
+      toast.error(t('errors.networkError'))
+      setAuthFailed(true)
+      inputRef.current.select()
+    }
+  }
+
   return (
     <div className="h-100">
       <div className="h-100" id="chat">
@@ -56,33 +84,7 @@ const SignUpPage = () => {
                         confirmPassword: '',
                       }}
                       validationSchema={SignupSchema}
-                      onSubmit={async (values, { setSubmitting, setErrors }) => {
-                        const { username, password } = values
-                        setAuthFailed(false)
-                        try {
-                          const res = await axios.post(routes.signUpPath(), { username, password })
-                          localStorage.setItem('userId', JSON.stringify(res.data))
-                          localStorage.setItem('user', values.username)
-                          dispatch(logIn())
-                          navigate('/')
-                        }
-                        catch (err) {
-                          setSubmitting(false)
-                          if (err.isAxiosError) {
-                            if (err.response?.status === 409) {
-                              setErrors({
-                                confirmPassword: t('errors.alreadyExistsUserError'),
-                              })
-                              return
-                            }
-                            toast.error(t('errors.serverLoadDataError'))
-                            return
-                          }
-                          toast.error(t('errors.networkError'))
-                          setAuthFailed(true)
-                          inputRef.current.select()
-                        }
-                      }}
+                      onSubmit={(values, { setSubmitting, setErrors }) => sendSignUpRequest(values, { setSubmitting, setErrors })}
                     >
                       {({ errors, touched }) => (
                         <Form>

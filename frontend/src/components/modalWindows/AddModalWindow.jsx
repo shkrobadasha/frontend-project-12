@@ -44,6 +44,38 @@ const AddModalWindow = () => {
       .required(t('errors.requiredField')),
   })
 
+  const sendNewChannelRequest = async (values, { setSubmitting }) => {
+    setAuthFailed(false)
+    try {
+      const newChannel = {
+        name: values.channelName,
+        removable: true,
+        id: _.uniqueId(),
+      }
+      await axios.post(routes.channelsPath(), newChannel, {
+        headers: getAuthHeader(),
+      })
+      setSubmitting(false)
+      dispatch(setAddModalActive(false))
+    }
+    catch (err) {
+      if (err.isAxiosError) {
+        if (err.response?.status === 401) {
+          toast.error(t('errors.userLoginError'))
+          navigate('/login', { state: { from: '/main' } })
+          return
+        }
+      toast.error(t('errors.serverLoadDataError'))
+        return
+      }
+      else {
+        toast.error(t('errors.networkError'))
+      }
+      setSubmitting(false)
+      setAuthFailed(true)
+    }
+  }
+
   if (!isActive) {
     return null
   }
@@ -69,37 +101,7 @@ const AddModalWindow = () => {
               <Formik
                 initialValues={{ channelName: '' }}
                 validationSchema={channelScheme}
-                onSubmit={async (values, { setSubmitting }) => {
-                  setAuthFailed(false)
-                  try {
-                    const newChannel = {
-                      name: values.channelName,
-                      removable: true,
-                      id: _.uniqueId(),
-                    }
-                    await axios.post(routes.channelsPath(), newChannel, {
-                      headers: getAuthHeader(),
-                    })
-                    setSubmitting(false)
-                    dispatch(setAddModalActive(false))
-                  }
-                  catch (err) {
-                    if (err.isAxiosError) {
-                      if (err.response?.status === 401) {
-                        toast.error(t('errors.userLoginError'))
-                        navigate('/login', { state: { from: '/main' } })
-                        return
-                      }
-                      toast.error(t('errors.serverLoadDataError'))
-                      return
-                    }
-                    else {
-                      toast.error(t('errors.networkError'))
-                    }
-                    setSubmitting(false)
-                    setAuthFailed(true)
-                  }
-                }}
+                onSubmit={(values, { setSubmitting }) => sendNewChannelRequest(values, { setSubmitting })}
               >
                 {({ errors, touched, isSubmitting }) => (
                   <Form>

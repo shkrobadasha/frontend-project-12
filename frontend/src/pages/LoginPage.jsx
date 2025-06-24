@@ -30,6 +30,35 @@ const LoginPage = () => {
     }
   }, [])
 
+  const sendAuthRequest = async (values, { setSubmitting, setErrors }) => {
+    setAuthFailed(false)
+    try {
+      const res = await axios.post(routes.loginPath(), values)
+      localStorage.setItem('userId', JSON.stringify(res.data))
+      localStorage.setItem('user', values.username)
+      dispatch(logIn())
+      const { from } = location.state || { from: { pathname: '/' } }
+      navigate(from)
+    }
+    catch (err) {
+      setSubmitting(false)
+      if (err.isAxiosError) {
+        if (err.response?.status === 401) {
+          toast.error(t('errors.userLoginError'))
+          setErrors({
+            password: t('errors.loginError'),
+          })
+          return
+        }
+        toast.error(t('errors.serverLoadDataError'))
+        return
+      }
+      setAuthFailed(true)
+      inputRef.current.select()
+      toast.error(t('errors.networkError'))
+    }
+  }
+
   return (
     <div className="h-100">
       <div className="h-100" id="chat">
@@ -51,34 +80,7 @@ const LoginPage = () => {
                         password: '',
                       }}
                       validationSchema={LoginSchema}
-                      onSubmit={async (values, { setSubmitting, setErrors }) => {
-                        setAuthFailed(false)
-                        try {
-                          const res = await axios.post(routes.loginPath(), values)
-                          localStorage.setItem('userId', JSON.stringify(res.data))
-                          localStorage.setItem('user', values.username)
-                          dispatch(logIn())
-                          const { from } = location.state || { from: { pathname: '/' } }
-                          navigate(from)
-                        }
-                        catch (err) {
-                          setSubmitting(false)
-                          if (err.isAxiosError) {
-                            if (err.response?.status === 401) {
-                              toast.error(t('errors.userLoginError'))
-                              setErrors({
-                                password: t('errors.loginError'),
-                              })
-                              return
-                            }
-                            toast.error(t('errors.serverLoadDataError'))
-                            return
-                          }
-                          setAuthFailed(true)
-                          inputRef.current.select()
-                          toast.error(t('errors.networkError'))
-                        }
-                      }}
+                      onSubmit={(values, { setSubmitting, setErrors }) => sendAuthRequest(values, { setSubmitting, setErrors })}
                     >
                       {({ errors, touched }) => (
                         <Form>
