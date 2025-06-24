@@ -30,10 +30,12 @@ const RemoveModalWindow = () => {
     try {
       await axios.delete(routes.channelPath(idForRemove), { headers: getAuthHeader() })
       dispatch(setRemoveModalActive(false))
-    } catch (err) {
+    }
+    catch (err) {
       if (err.isAxiosError) {
         toast.error(t('errors.serverLoadDataError'))
-      } else {
+      }
+      else {
         toast.error(t('errors.networkError'))
       }
       setAuthFailed(true)

@@ -28,7 +28,8 @@ const MessageForm = () => {
         { headers: getAuthHeader() },
       )
       dispatch(setCurrentText(''))
-    } catch (err) {
+    }
+    catch (err) {
       if (err.isAxiosError) {
         toast.err(t('errors.serverLoadDataError'))
       }

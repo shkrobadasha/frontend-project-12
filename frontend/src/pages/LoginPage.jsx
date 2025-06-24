@@ -60,7 +60,8 @@ const LoginPage = () => {
                           dispatch(logIn())
                           const { from } = location.state || { from: { pathname: '/' } }
                           navigate(from)
-                        } catch (err) {
+                        }
+                        catch (err) {
                           setSubmitting(false)
                           if (err.isAxiosError) {
                             if (err.response?.status === 401) {
