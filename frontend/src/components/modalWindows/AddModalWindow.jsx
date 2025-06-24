@@ -65,7 +65,7 @@ const AddModalWindow = () => {
           navigate('/login', { state: { from: '/main' } })
           return
         }
-      toast.error(t('errors.serverLoadDataError'))
+        toast.error(t('errors.serverLoadDataError'))
         return
       }
       else {
