@@ -68,29 +68,27 @@ const AddModalWindow = () => {
                 initialValues={{ channelName: '' }}
                 validationSchema={channelScheme}
                 onSubmit={async (values, { setSubmitting }) => {
-                  setAuthFailed(false)
-                  try {
-                    const newChannel = {
-                      name: values.channelName,
-                      removable: true,
-                      id: _.uniqueId(),
+                    setAuthFailed(false)
+                    try {
+                        const newChannel = {
+                            name: values.channelName,
+                            removable: true,
+                            id: _.uniqueId(),
+                        }
+                        await axios.post(routes.channelsPath(), newChannel, {
+                            headers: getAuthHeader(),
+                        })
+                        setSubmitting(false)
+                        dispatch(setAddModalActive(false))
+                    } catch (err) {
+                      if (err.isAxiosError) {
+                        toast.error(t('errors.serverLoadDataError'))
+                      } else {
+                        toast.error(t('errors.networkError'))
+                      }
+                      setSubmitting(false)
+                      setAuthFailed(true)
                     }
-                    await axios.post(routes.channelsPath(), newChannel, {
-                      headers: getAuthHeader(),
-                    })
-                    setSubmitting(false)
-                    dispatch(setAddModalActive(false))
-                  } catch (err) 
-                  {
-                    if (err.isAxiosError) {
-                      toast.error(t('errors.serverLoadDataError'))
-                    } else 
-                    {
-                      toast.error(t('errors.networkError'))
-                    }
-                    setSubmitting(false)
-                    setAuthFailed(true)
-                  }
                 }}
               >
                 {({ errors, touched, isSubmitting }) => (

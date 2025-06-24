@@ -78,12 +78,10 @@ const EditModalWindow = () => {
                     })
                     setSubmitting(false)
                     dispatch(setEditModalActive(false))
-                  } catch (err) 
-                  {
+                  } catch (err) {
                     if (err.isAxiosError) {
                       toast.error(t('errors.serverLoadDataError'))
-                    } else 
-                    {
+                    } else {
                       toast.error(t('errors.networkError'))
                     }
                     setSubmitting(false)

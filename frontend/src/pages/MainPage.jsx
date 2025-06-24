@@ -34,12 +34,10 @@ const MainPage = () => {
         ])
         dispatch(setChannels(channelsRes.data))
         dispatch(setMessages(mes.data))
-      } catch (error) 
-      {
+      } catch (error) {
         if (error.isAxiosError) {
           toast.error(t('errors.serverLoadDataError'))
-        } 
-        else {
+        } else {
           toast.error(t('errors.networkError'))
         }
       }

@@ -60,16 +60,15 @@ const SignUpPage = () => {
                         const { username, password } = values
                         setAuthFailed(false)
                         try {
-                          const res = await axios.post(routes.signUpPath(), { username, password });
+                          const res = await axios.post(routes.signUpPath(), { username, password })
                           localStorage.setItem('userId', JSON.stringify(res.data))
                           localStorage.setItem('user', values.username)
                           dispatch(logIn())
                           navigate('/')
-                        } 
+                        }
                         catch (err) {
                           setSubmitting(false)
-                          if (err.isAxiosError) 
-                            {
+                          if (err.isAxiosError) {
                             if (err.response?.status === 409) {
                               setErrors({
                                 confirmPassword: t('errors.alreadyExistsUserError'),
