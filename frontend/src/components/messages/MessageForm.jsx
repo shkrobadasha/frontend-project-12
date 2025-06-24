@@ -1,5 +1,6 @@
 import axios from 'axios'
 import _ from 'lodash'
+import { useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
 import { getAuthHeader } from '../../pages/MainPage'
 import { setCurrentText } from '../../slices/messagesSlice'
@@ -11,6 +12,7 @@ const MessageForm = () => {
   const dispatch = useDispatch()
   const currentText = useSelector(state => state.messages.currentText)
   const currentChannel = useSelector(state => state.channels.currentChannel)
+  const navigate = useNavigate()
   const { t } = useTranslation()
 
   const handleSendMessage = async (e) => {
@@ -31,7 +33,13 @@ const MessageForm = () => {
     }
     catch (err) {
       if (err.isAxiosError) {
-        toast.err(t('errors.serverLoadDataError'))
+        if (err.response?.status === 401) {
+          toast.error(t('errors.userLoginError'))
+          navigate('/login', { state: { from: '/main' } })
+          return
+        }
+        toast.error(t('errors.serverLoadDataError'))
+        return
       }
       toast.err(t('errors.networkError'))
     }
@@ -52,6 +60,7 @@ const MessageForm = () => {
             className="border-0 p-0 ps-2 form-control"
             value={currentText}
             onChange={handleInputChange}
+            autoComplete="off"
           />
           <button type="submit" className="btn btn-primary">
             {t('modalWindow.windowsButtons.sendButton')}

@@ -65,6 +65,7 @@ const LoginPage = () => {
                           setSubmitting(false)
                           if (err.isAxiosError) {
                             if (err.response?.status === 401) {
+                              toast.error(t('errors.userLoginError'))
                               setErrors({
                                 password: t('errors.loginError'),
                               })
@@ -89,6 +90,7 @@ const LoginPage = () => {
                               name="username"
                               isInvalid={authFailed}
                               ref={inputRef}
+                              autoComplete="off"
                             />
                             {errors.username && touched.username && (
                               <div className="invalid-feedback">{errors.username}</div>
@@ -101,6 +103,7 @@ const LoginPage = () => {
                               type="password"
                               name="password"
                               isInvalid={authFailed}
+                              autoComplete="off"
                             />
                             {errors.password && touched.password && (
                               <div className="invalid-feedback">{errors.password}</div>

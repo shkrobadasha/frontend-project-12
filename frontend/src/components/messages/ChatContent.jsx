@@ -2,6 +2,7 @@ import { useSelector } from 'react-redux'
 import * as Profanity from 'leo-profanity'
 import { useTranslation } from 'react-i18next'
 import MessageForm from './MessageForm'
+import { useEffect } from 'react'
 
 const ChatContent = () => {
   const { t } = useTranslation()
@@ -12,6 +13,13 @@ const ChatContent = () => {
     const currentMessages = messages.filter(message => message.channelId === currentChannel.id)
     return currentMessages
   }
+
+  useEffect(() => {
+    const messagesBox = document.getElementById("messages-box");
+    if (messagesBox) {
+      messagesBox.scrollTo(0, messagesBox.scrollHeight);
+    }
+  }, [ getMessagesOfCurrentChannel(currentMessages)]);
 
   const renderMessages = () => {
     const curMessages = getMessagesOfCurrentChannel(currentMessages)

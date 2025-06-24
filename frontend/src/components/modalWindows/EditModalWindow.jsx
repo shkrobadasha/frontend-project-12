@@ -10,6 +10,7 @@ import { getAuthHeader } from '../../pages/MainPage.jsx'
 import routes from '../../routes.js'
 import { setEditModalActive } from '../../slices/modalSlice.js'
 import { setCurrentChannel } from '../../slices/channelsSlice.js'
+import { useNavigate } from 'react-router-dom'
 
 const EditModalWindow = () => {
   // eslint-disable-next-line no-unused-vars
@@ -21,6 +22,7 @@ const EditModalWindow = () => {
   const currentChannels = useSelector(state => state.channels.channels)
   const channelNames = currentChannels.map(channel => channel.name)
   const inputRef = useRef(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (isActive && inputRef.current) {
@@ -81,7 +83,13 @@ const EditModalWindow = () => {
                   }
                   catch (err) {
                     if (err.isAxiosError) {
+                      if (err.response?.status === 401) {
+                        toast.error(t('errors.userLoginError'))
+                        navigate('/login', { state: { from: '/main' } })
+                        return
+                      }
                       toast.error(t('errors.serverLoadDataError'))
+                      return
                     }
                     else {
                       toast.error(t('errors.networkError'))
@@ -102,6 +110,7 @@ const EditModalWindow = () => {
                         name="channelName"
                         isInvalid={!!errors.channelName && touched.channelName}
                         ref={inputRef}
+                        autoComplete="off"
                       />
                       {errors.channelName && touched.channelName && (
                         <div className="invalid-feedback">{errors.channelName}</div>

@@ -94,6 +94,7 @@ const SignUpPage = () => {
                               name="username"
                               isInvalid={(touched.username && errors.username) || authFailed}
                               ref={inputRef}
+                              autoComplete="off"
                             />
                             {errors.username && touched.username && (
                               <div className="invalid-feedback">{errors.username}</div>
@@ -106,6 +107,7 @@ const SignUpPage = () => {
                               type="password"
                               name="password"
                               isInvalid={(touched.password && errors.password) || authFailed}
+                              autoComplete="off"
                             />
                             {errors.password && touched.password && (
                               <div className="invalid-feedback">{errors.password}</div>
@@ -118,6 +120,7 @@ const SignUpPage = () => {
                               type="password"
                               name="confirmPassword"
                               isInvalid={(touched.confirmPassword && errors.confirmPassword) || authFailed}
+                              autoComplete="off"
                             />
                             {errors.confirmPassword && touched.confirmPassword && (
                               <div className="invalid-feedback">{errors.confirmPassword}</div>

@@ -8,6 +8,7 @@ import { getAuthHeader } from '../../pages/MainPage.jsx'
 import routes from '../../routes.js'
 import { setRemoveModalActive } from '../../slices/modalSlice.js'
 import { setCurrentChannel } from '../../slices/channelsSlice.js'
+import { useNavigate } from 'react-router-dom'
 
 const RemoveModalWindow = () => {
   // eslint-disable-next-line no-unused-vars
@@ -18,6 +19,7 @@ const RemoveModalWindow = () => {
   const idForRemove = useSelector(state => state.modal.idForRemove)
   const currentChannels = useSelector(state => state.channels.channels)
   const defaultChannel = { id: '1', name: 'general', removable: false }
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (currentChannels && isActive) {
@@ -33,7 +35,13 @@ const RemoveModalWindow = () => {
     }
     catch (err) {
       if (err.isAxiosError) {
+        if (err.response?.status === 401) {
+          toast.error(t('errors.userLoginError'))
+          navigate('/login', { state: { from: '/main' } });
+          return
+        }
         toast.error(t('errors.serverLoadDataError'))
+        return
       }
       else {
         toast.error(t('errors.networkError'))

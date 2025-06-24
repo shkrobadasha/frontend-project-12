@@ -11,6 +11,7 @@ import { getAuthHeader } from '../../pages/MainPage.jsx'
 import routes from '../../routes.js'
 import { setCurrentChannel } from '../../slices/channelsSlice.js'
 import { setAddModalActive } from '../../slices/modalSlice.js'
+import { useNavigate } from 'react-router-dom'
 
 const AddModalWindow = () => {
   const dispatch = useDispatch()
@@ -21,6 +22,7 @@ const AddModalWindow = () => {
   const currentChannels = useSelector(state => state.channels.channels)
   const channelNames = currentChannels.map(channel => channel.name)
   const inputRef = useRef(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (isActive && inputRef.current) {
@@ -83,7 +85,13 @@ const AddModalWindow = () => {
                   }
                   catch (err) {
                     if (err.isAxiosError) {
+                      if (err.response?.status === 401) {
+                        toast.error(t('errors.userLoginError'))
+                        navigate('/login', { state: { from: '/main' } });
+                        return
+                      }
                       toast.error(t('errors.serverLoadDataError'))
+                      return
                     }
                     else {
                       toast.error(t('errors.networkError'))
@@ -103,6 +111,7 @@ const AddModalWindow = () => {
                         name="channelName"
                         isInvalid={!!errors.channelName && touched.channelName}
                         ref={inputRef}
+                        autoComplete="off"
                       />
                       {errors.channelName && touched.channelName && (
                         <div className="invalid-feedback">{errors.channelName}</div>
