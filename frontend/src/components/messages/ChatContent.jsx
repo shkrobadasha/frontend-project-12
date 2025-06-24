@@ -15,11 +15,11 @@ const ChatContent = () => {
   }
 
   useEffect(() => {
-    const messagesBox = document.getElementById("messages-box");
+    const messagesBox = document.getElementById('messages-box')
     if (messagesBox) {
-      messagesBox.scrollTo(0, messagesBox.scrollHeight);
+      messagesBox.scrollTo(0, messagesBox.scrollHeight)
     }
-  }, [ getMessagesOfCurrentChannel(currentMessages)]);
+  }, [getMessagesOfCurrentChannel(currentMessages)])
 
   const renderMessages = () => {
     const curMessages = getMessagesOfCurrentChannel(currentMessages)

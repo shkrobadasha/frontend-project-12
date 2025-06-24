@@ -87,7 +87,7 @@ const AddModalWindow = () => {
                     if (err.isAxiosError) {
                       if (err.response?.status === 401) {
                         toast.error(t('errors.userLoginError'))
-                        navigate('/login', { state: { from: '/main' } });
+                        navigate('/login', { state: { from: '/main' } })
                         return
                       }
                       toast.error(t('errors.serverLoadDataError'))

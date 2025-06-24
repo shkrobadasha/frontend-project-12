@@ -55,7 +55,7 @@ export default {
       alreadyExistsChannelError: 'Должно быть уникальным',
       networkError: 'Ошибка соединения',
       serverLoadDataError: 'Ошибка загрузки данных',
-      userLoginError: "Этот пользователь не авторизован",
+      userLoginError: 'Этот пользователь не авторизован',
     },
   },
 }
